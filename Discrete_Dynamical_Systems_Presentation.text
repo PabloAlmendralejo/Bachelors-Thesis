@@ -1,0 +1,626 @@
+%----------------------------------------------------------------------------------------
+%    PACKAGES AND THEMES
+%----------------------------------------------------------------------------------------
+
+\documentclass[aspectratio=169,xcolor=dvipsnames]{beamer}
+\usetheme{Madrid}
+
+\setbeamertemplate{footline}{
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.3\paperwidth,ht=2.5ex,dp=1ex,left]{author in head/foot}%
+      \usebeamerfont{author in head/foot} \hspace{1em} Pablo Borrego Ramos
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.4\paperwidth,ht=2.5ex,dp=1ex,center]{title in head/foot}%
+      \usebeamerfont{title in head/foot} Sistemas Dinámicos Discretos en Dimensiones Bajas
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.3\paperwidth,ht=2.5ex,dp=1ex,right]{date in head/foot}%
+      \usebeamerfont{date in head/foot} \insertshortdate \hspace{1em}  \hspace{1em}
+    \end{beamercolorbox}%
+  }%
+  \vskip0pt%
+}
+
+\usepackage{hyperref}
+\usepackage{graphicx} 
+\usepackage{booktabs} 
+\usepackage{amsmath}
+\usepackage{amsthm}
+%\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{float}
+%\usepackage[hidelinks]{hyperref}
+
+\pgfplotsset{compat=1.18}
+
+\newtheorem{definicion}{Definición}[section] 
+\newtheorem{proposicion}{Proposición}[section] 
+\newtheorem{teorema}{Teorema}[section] 
+
+
+%----------------------------------------------------------------------------------------
+%    TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{Sistemas Dinámicos Discretos en Dimensiones Bajas}
+
+\author{Pablo Borrego Ramos}
+
+\institute
+{
+    Facultad de Ciencias. PCEO Matemáticas y Estadística \\
+    Universidad de Extremadura 
+}
+\date{\today} 
+
+%----------------------------------------------------------------------------------------
+%    PRESENTATION SLIDES
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% \begin{frame}{Motivación y objetivos}
+%    \tableofcontents
+% \end{frame}
+
+%------------------------------------------------
+\section{First Section}
+%------------------------------------------------
+\begin{frame}{Motivación y Objetivos}
+
+\textbf{Motivación}
+
+Los sistemas dinámicos discretos unidimensionales son interesantes por su simplicidad estructural, pero además permiten modelar y analizar una gran variedad de fenómenos complejos, suelen estar asociados a ecuaciones en diferencias. Estos sistemas encuentran aplicaciones en diversas áreas como la biología,  la física y la criptografía. Un ejemplo clásico es la secuencia de Fibonacci, que ha sido utilizada para describir la evolución de poblaciones de conejos.
+
+\vspace{0.5em}
+\textbf{Objetivos}
+
+\begin{itemize}
+    \item \textbf{Capítulo 1:} Estudio de la Estabilidad en Sistemas Dinámicos Discretos
+    \item \textbf{Capítulo 2:} Bifurcaciones en Sistemas Discretos Unidimensionales .
+    \item \textbf{Capítulo 3:} Introducción al Caos
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Ecuaciones diferenciales y ecuaciones en diferencias}
+
+    Una ecuación en diferencias es una expresión de la forma:
+    \[
+    G(n, x_n,x_{n+1}, \ldots, x_{n+k}) = 0 \quad \forall n \in \mathbb{N}
+    \]
+    Donde  $G:\mathbb{N} \times \mathbb{R}^{k+1}  \mapsto \mathbb{R}$ 
+
+    \begin{block}{Solución de ecuación en diferencias}
+    Denominaremos solución de la ecuación en diferencias a toda sucesión 
+    $$
+    x : \mathbb{N} \mapsto \mathbb{R}
+    $$ 
+    Que satisface la ecuación anterior. Llamaremos órbita a la imagen de las soluciones, es decir, al conjunto $\{x(n) \colon \, n \in \mathbb{N}\}$. 
+    \end{block}
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Ecuaciones diferenciales explícitas en una dimensión}
+
+    En este trabajo nos centraremos en las ecuaciones en diferencias donde $G$ tiene como dominio $\mathbb{N} \times \mathbb{R}^2$ y la ecuación en diferencias es de la forma:
+    \[x_{n+1} = f(x_n),\quad \text{donde } f : \mathbb{R} \mapsto  \mathbb{R} \]
+
+    Las soluciones de esta ecuación son sucesiones de la forma $\{x_0,f(x_0),f^2(x_0),\ldots \}$
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Métodos de discretización}
+    Dada una ecuación diferencial $\dot{x}(t) = f(x(t))$ existen varios métodos que nos permiten convertir dicha ecuación en una ecuación en diferencias tomando una cantidad numerable de valores.
+
+    \begin{block}{Método de Euler}
+    El método de Euler discretiza la derivada de la función reemplazando \(\dot{x}(t)\) por el cociente de diferencias \((x_{n+1} - x_n)/h\). Así, la ecuación diferencial \(\dot{x} = f(x)\) se transforma en una ecuación en diferencias:
+    \[
+    x_{n+1} = x_n + h f(x_n).
+    \]
+    \end{block}
+
+
+
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Métodos de discretización}
+
+    \begin{block}{Método de Newton}
+    Definimos \( x_{n+1} \) como el punto donde la tangente a la gráfica de \( f(x) \) 
+    en el punto \( (x_n, f(x_n)) \) corta el eje \( x \).
+    La ecuación de la tangente es
+    \[
+    y - f(x_n) = f'(x_n)(x - x_n)
+    \]
+    Despejando el punto de corte con el eje $x$
+    \[
+    x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+    \]
+    \end{block}    
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Dinámica Discreta de Funciones Escalares}
+
+    \begin{definicion}[Punto Fijo]
+    Dada una función $f: \mathbb{R} \rightarrow \mathbb{R}$ y un punto $\hat{x}$ diremos que $\hat{x}$ es un punto fijo cuando $f(\hat{x})=\hat{x}$. 
+    \end{definicion}    
+    \begin{definicion}
+    Un punto fijo $\hat{x}$ de una función escalar $f$ es estable si para todo $\varepsilon > 0$ existe un $\delta > 0$ de tal forma que para todo $x_0$ tal que $|x_0 - \hat{x}| < \delta$  se cumple que $|f^n(x_0) - \hat{x}| < \varepsilon $ para todo $ n \in \mathbb{N}$. 
+    Por el contrario, diremos que un punto fijo es inestable cuando no es estable.
+    \end{definicion}
+    
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Dinámica Discreta de Funciones Escalares}
+
+    \begin{definicion}
+        Un punto fijo \(\hat{x}\) del $f$ es un atractor global si para cada \(x_0 \in \mathbb{R}\), resulta
+        \[
+        \lim_{n \to \infty} x_n = \hat{x}
+        \]
+        Siendo \(x_n = f^n(x_0)\). En cambio, si solo ocurre para un entorno de $\hat{x}$, diremos que es un atractor local.
+    \end{definicion} 
+    
+    \begin{definicion}
+    
+    Un punto fijo $\hat{x}$ de $f$ se dice globalmente (localmente) asintóticamente estable si satisface:
+    \begin{itemize}
+        \item $\hat{x}$ es estable.
+        \item $\hat{x}$ es atractor global (local).
+    \end{itemize}
+
+    \end{definicion}
+
+
+
+\end{frame}
+
+%------------------------------------------------
+    
+\begin{frame}{Estabilidad en el caso hiperbólico}
+    \begin{definicion}
+    
+    Dado un punto fijo $\hat{x} $ de una función escalar $f$ diremos que $\hat{x}$ es un punto hiperbólico cuando $|f'(\hat{x})| \neq 1$.
+    \end{definicion}
+
+    \begin{teorema}\label{Teorema1.3.1}
+    Sea $f$ una función escalar de clase 1 y $\hat{x}$ un punto fijo hiperbólico de $f$.
+    \begin{itemize}
+        \item $\hat{x}$ es localmente asintoticamente estable $\iff$ $|f'(\hat{x})| <1$
+        \item $\hat{x}$ es inestable $\iff$ $|f'(\hat{x})| > 1 $
+    \end{itemize}
+    \end{teorema}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Demostración}
+
+A través de una traslación, consideramos el punto $(0,0)$, basta definir la nueva función,
+$$
+g(u) = f(\hat{x} + u) - f(\hat{x})
+$$
+A continuación, definimos la máxima y mínima pendiente de la función en un entorno del punto fijo,
+$$
+m_\varepsilon =  \min_{|s| \leq \varepsilon}|f'(\hat{x}+s)|, \quad M_\varepsilon = \max_{|s| \leq \varepsilon}|f'(\hat{x}+s)|
+$$
+A través del Teorema del Valor Medio se puede probar que,
+\[
+m_\varepsilon |u| \leq |g(u)| \leq M_\varepsilon |u|
+\]
+Y aplicando inducción tenemos
+$$
+|u|  m^n_\varepsilon \leq |g^n(u)| \leq  |u|  M^n_\varepsilon \quad \forall n \in \{0,1 \ldots k\}
+$$
+    
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Demostración}
+
+Cuando \( |f'(\hat{x})| < 1 \), la continuidad de \( f'(x) \) garantiza la existencia de un entorno de \( \hat{x} \) en el que \( |f'(\hat{x} + s)| < 1 \) y por tanto, en dicho entorno $M_\epsilon < 1$. Esto, junto con la desigualdad que demostramos previamente, nos permite ver que 
+$$ 
+|g(u)|  < |u|M_\epsilon < |u|
+$$
+%
+Aplicando un argumento inductivo, concluimos que 
+$$ 
+|g^n(u)| < |u|M^n_\epsilon < |u|
+$$ 
+De aquí es fácil deducir la estabilidad y la estabilidad asintótica.
+
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Demostración}
+Cuando \( |f'(\hat{x})| > 1 \) existe un $\delta > 0$ tal que si $|x - \hat{x}| < \delta$ entonces $|f'(\hat{x} + x)| > 1$.
+
+\vspace{1em}
+
+Para demostrar que $\hat{x}$ es inestable basta ver que existe un  $\hat{n} \in \mathbb{N}$ tal que $g^{\hat{n}}(u) \notin (-\delta,\delta)$ para cualquier $u \in (-\delta,\delta)$.
+
+\vspace{1em}
+
+Se demuestra por reducción al absurdo, suponemos que $g^n(u) \in (-\delta,\delta)$ para todo $n \in \mathbb{N}$ y todo $u \in (-\delta,\delta)$.
+Como $|f'(\hat{x})| > 1$ tenemos que  $ \exists \delta > 0 \text{ tal que } m_\delta > 1$, teniendo en cuenta
+\[
+|u| m^n_\delta \leq |g^n(u)|
+\]
+%
+Tendríamos entonces que $|u|m^n_{\delta}$ estaría acotada, lo cual es falso, pues como $m_\delta > 1$ $m^n_\delta \to \infty$ cuando $n \to \infty$.
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Estabilidad en el caso no hiperbólico}
+
+\begin{teorema}\label{Teorema1.3.2}
+Dada una función $f \in \mathcal{C}^3$ y un punto fijo $\hat{x} $ de $f$:
+
+\begin{itemize}
+    \item[1.] Si $f'(\hat{x}) = 1$, entonces tenemos tres casos a considerar:
+    \begin{itemize}
+        \item[(a)] Si $f''(\hat{x}) > 0$, entonces $\hat{x}$ es semi-asintóticamente estable por la izquierda.
+        \item[(b)] Si $f''(\hat{x}) < 0$, entonces $\hat{x}$ es semi-asintóticamente estable por la derecha. 
+        \item[(c)] Si $f''(\hat{x}) = 0$ pueden darse dos casos:
+            \begin{itemize}
+                \item[(c.1)] $f'''(\hat{x}) > 0$, entonces $\hat{x}$ es asintóticamente estable.
+                \item[(c.2)] $f'''(\hat{x}) < 0$, entonces $\hat{x}$ es inestable.
+            \end{itemize}
+    \end{itemize}
+
+    \item[2.] Si $f'(\hat{x}) = -1$ y $3 f''(\hat{x})^2 - 2 f'''(\hat{x}) \neq 0$, entonces tenemos dos casos a considerar:
+    \begin{itemize}
+        \item[(a)] Si $f'''(\hat{x}) + \frac{3}{2} f''(\hat{x})^2  < 0$, entonces $\hat{x}$ es asintóticamente estable.
+        \item[(b)] Si $f'''(\hat{x})  + \frac{3}{2} f''(\hat{x})^2 > 0$, entonces $\hat{x}$ es inestable.
+    \end{itemize}
+\end{itemize}
+\end{teorema}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Bifurcaciones: Perturbación}
+
+Dada una función $F$, diremos que una perturbación del sistema dinámico asociado a $f$ es una función de la forma:
+$$
+F : \mathbb{R}^k \times \mathbb{R} \rightarrow \mathbb{R} \quad  \quad (\lambda,x) \rightarrow F(\lambda,x) \quad \text{t.q}  \quad F(0,x)=f(x)
+$$
+
+\begin{definicion}
+    Dada una función $f$ y una solución $\{x_0,x_1,x_2 , \ldots\} $ de $x_{n+1} = f(x_n)$ diremos que la solución es monótona creciente cuando $x_n \leq x_{n+1}$ $\forall n \in \mathbb{N}$ y decreciente cuando $x_n \geq x_{n+1}$ $\forall n \in \mathbb{N}$. Diremos que el sistema dinámico asociado a una función es monótono cuando toda órbita sea monótona. 
+\end{definicion}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Estabilidad de las bifurcaciones}
+
+\begin{proposicion}
+    
+Supongamos que $f \in \mathcal{C}^1$ tiene un sistema dinámico monótono, $f(0)=0$ y $f'(0) \neq 1$. Consideramos la función $\mathcal{C}^1$ $F(\lambda,x)$ que cumple que $F(0,x) = f(x) $.
+Entonces existe un entorno de $x = 0$ en el que para valores pequeños de $\mathbf{\lambda}$ $F(\lambda,x)$ tiene un único punto fijo con la misma estabilidad que la del punto fijo $0$ de $f$.
+
+\end{proposicion}
+    
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Puntos fijos degenerados de una función
+cuadrática}
+
+\begin{proposicion}
+
+Considerando una función $f$ que cumple $f(0)=0, \; f'(0) =1,\; f''(0) \neq 0$ y una perturbación $F\in\mathcal{C}^2$. Sea $\psi(\lambda)$ tal que $H(\lambda, \psi(\lambda)) = 0$ donde $H(\lambda, x) := \frac{\partial (F(\lambda, x) - x)}{\partial x}$ y denotando $\alpha(\lambda) = F(\lambda,\psi(\lambda)) - \psi(\lambda)$, tenemos:
+
+\begin{enumerate} 
+
+\item Si $\alpha(\lambda) \cdot f''(0) < 0 $ $\Rightarrow  F$ tiene dos puntos fijos para valores pequeños de $\|\lambda\|$.
+
+\item Si $\alpha(\lambda) \cdot f''(0) = 0 $ $\Rightarrow  F$ tiene un punto fijo para valores pequeños de $\|\lambda\|$.
+
+\item Si $\alpha(\lambda) \cdot f''(0) > 0 $ $\Rightarrow  F$ no tiene puntos fijos para valores pequeños de $\|\lambda\|$.
+\end{enumerate}
+\end{proposicion}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{}
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig47 (1).png}
+        \label{fig:mi_imagen_9}
+    \end{subfigure}
+    \hfill % Ensures the figures are properly aligned
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig48 (1).png}
+        \label{fig:mi_imagen_10}
+    \end{subfigure}
+    \label{fig:mi_imagen_total1.8}
+\end{figure}
+
+ 
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Bifurcaciones de doble periodo}
+
+Diremos que una función \( f(x) \) cumple las hipótesis \( H_1 \) cuando: 
+\begin{enumerate}
+    \item  \( f(0) = 0 \) y \( f'(0) = -1 \).
+    \item  \( (f \circ f)'''(0) \neq 0 \).
+\end{enumerate}
+
+Y dada una perturbación de un parámetro \( F_{\lambda}(x) \) de \( f(x) \), diremos que cumple las hipótesis \( H_2 \) cuando para todo $\lambda \in \mathbb{R}$:
+\begin{enumerate}[start = 3]
+    \item  \( F_{\lambda}(0) = 0 \).
+    \item  \( \frac{dF_{\lambda}(0)}{dx} = -(1 + \lambda) \).
+\end{enumerate}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Bifurcaciones de doble periodo}
+
+\begin{teorema}
+Sea \( f(x) \in \mathcal{C}^3 \) una función con un punto fijo en \( 0 \) que cumple las hipótesis \( H_1 \) y dada una perturbación \( F_{\lambda}(x) \) de \( f(x) \) que cumple las hipótesis \( H_2 \), denotando $g = f \circ f$. Existe un entorno de \( (\lambda,x) = (0,0) \) en el cual la existencia de órbitas 2-periódicas viene determinada por \( g'''(0) \) y \( \lambda \) de la siguiente forma:
+
+\begin{enumerate}
+    \item  Para los valores de $\lambda$ tales que \( \lambda g'''(0) < 0 \) existe una única órbita  \( \{\hat{x}_\lambda, F(\lambda,\hat{x}_\lambda) \} \) tal que \( F(F(\lambda,\hat{x}_\lambda)) = \hat{x}_\lambda\). Además, las órbitas son asintóticamente estables (inestables) si \( 0 \) es un punto fijo inestable (asintóticamente estable) para ese valor de \( \lambda \).
+
+    \item Cuando \( \lambda g'''(0) > 0 \), no existen órbitas periódicas tal que $F(F(\lambda,\hat{x}_\lambda)) = \hat{x}_\lambda$. 
+\end{enumerate}
+
+\end{teorema}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Sistema Caótico}
+
+\begin{definicion}
+
+Decimos que el sistema dinámico discreto asociado a una función $ f : [\alpha, \beta] \mapsto [\alpha, \beta]$ es caótico si:
+
+\begin{enumerate}
+    \item Los puntos periódicos de $ f $ son densos en $ [\alpha, \beta] $.
+    \item $ f $ es transitiva en $ [\alpha, \beta] $; es decir, dado cualquier par de subintervalos $ U_1 $ y $ U_2 $ en $ [\alpha, \beta] $, existe un punto $ x_0 \in U_1 $ y un $ n > 0 $ tal que $ f^n(x_0) \in U_2 $.
+    \item $ f $ tiene dependencia sensible en $  [\alpha, \beta] $; es decir, existe una constante de sensibilidad $ \tau $ tal que, para cualquier $ x_0 \in [\alpha, \beta] $ y cualquier entorno de $ x_0 $, $ U $, existe algún $ y_0 \in U $ y $ n > 0 $ tal que:
+    \[
+    |f^n(x_0) - f^n(y_0)| > \tau
+    \]
+\end{enumerate}
+
+\end{definicion}
+    
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{La ecuación logística}
+
+La ecuación logística es una familia de funciones de la forma:
+$$
+f(\lambda, x) = \lambda x (1 - x) \quad \lambda > 1
+$$
+Tiene dos puntos fijos, uno en $0$ y otro en $\hat{x}_\lambda = 1 - \frac{1}{\lambda}$.
+
+\vspace{1em}
+
+Gracias a los teoremas anteriores, podemos deducir:
+\begin{enumerate}
+    
+    \item Para $1 < \lambda < 3$ el $0$ es inestable y el $\hat{x}_\lambda = 1 - \frac{1}{\lambda}$ es asintoticamente estable.
+    
+    \item Para $\lambda = 3$ el $0$ es inestable y el $\hat{x}_\lambda = 1 - \frac{1}{\lambda}$ es estable.
+    
+    \item Para $ 3 < \lambda < 1 + \sqrt6 $ ambos puntos fijos son inestables
+\end{enumerate}
+
+\vspace{1em}
+
+Y computacionalmente, podemos calcular:
+
+\vspace{1em}
+
+\begin{enumerate}
+
+    \item Para $3.449 < \lambda < 3.570$ los valores de $\lambda$ dan comienzo a la aparición de unas 
+    dinámicas muy complejas.
+
+    \item Para  $\lambda = 3.839$ hay una única órbita periódica asintoticamente estable de periodo $3$.
+    
+\end{enumerate}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{La ecuación logística}
+
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig41 (1).png}
+    \caption{Podemos observar la presencia de caos en la órbita de  la ecuación logística cuando $\lambda> 4$}
+    \label{fig:mi_imagen41}
+    \end{figure}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{La ecuación logística}
+
+\begin{proposicion}
+
+Sea \(\Lambda\) el conjunto de puntos en \([0,1]\) con órbitas que nunca salen de \([0,1]\), entonces, $\Lambda$ es de la forma: 
+\[
+\Lambda=[0,1]-\bigcup_{n=0}^{\infty}A_{n}.
+\]
+%
+Donde $A_0  = \{ x \in \mathbb{R} \text{ tal que } f_{\lambda}(x)>1 \}$ y los $A_n$ se definen de forma recursiva:
+$$
+A_n = f_{\lambda}^{-1}(A_{n-1}) \cap [0,1] \text{  para  } n \in \mathbb{N}
+$$
+\end{proposicion}
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Conjugaciones}
+
+\begin{definicion}
+    
+Supongamos que $I$ y $J$ son intervalos y $f: I \to I$ y $g: J \to J$. Decimos que $f$ y $g$ son conjugadas si existe un homeomorfismo $h: I \to J$ tal que $h$ satisface la ecuación de conjugación $h \circ f = g \circ h$.
+
+\end{definicion}
+
+\begin{proposicion}\label{Prop5}
+Supongamos que $f: I \to I$ y $g: J \to J$ son conjugadas vía $h$, donde tanto $I$ como $J$ son intervalos cerrados en $\mathbb{R}$ de longitud finita. Si el sistema dinámico discreto de $f$ es caótico en $I$, entonces el de $g$ también es caótico en $J$.
+\end{proposicion}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{Dinámica Simbólica}
+
+Consideremos una función $f : \mathbb{R}/\mathbb{Z} \mapsto \mathbb{R}/\mathbb{Z}$.
+
+Dado un punto $x_0 \in  \mathbb{R}/\mathbb{Z}$, su órbita $x_{n+1} = f(x_n)$ y un recubrimiento de su imagen$\{I_0,I_1 \} $.
+
+
+Sea \( \psi : \mathbb{R}/\mathbb{Z} \to \{0,1\}^{\mathbb{N}} \) la función que asigna a cada \( x \in \mathbb{R}/\mathbb{Z} \) una secuencia binaria, donde la coordenada \( n \)-ésima de \( \psi(x) \) viene dada por:
+\[
+\psi(x)_n = 
+\begin{cases}
+0, & \text{si } x_n \in I_0, \\
+1, & \text{si } x_n \in I_1.
+\end{cases}
+\]
+
+Sea \(\Sigma\) el conjunto de todas las secuencias posibles de $0$s y $1$s. Definimos la distancia \(d(s,t) : \Sigma \mapsto \Sigma\) simétrica, positiva y que satisface la desigualdad triangular.
+
+\[
+d(s,t)=\sum_{i=0}^{\infty}\frac{|s_{i}-t_{i}|}{2^{i}}.
+\]
+
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{La función de desplazamiento}
+
+\begin{enumerate}
+    \item \(\sigma\) tiene asociado un sistema dinámico discreto caótico.
+    \item  \(\sigma\) es una conjugación discreta de \(f\) en \(\Lambda\).
+    \item \(\sigma\) es completamente comprensible desde el punto de vista de los sistemas dinámicos.
+\end{enumerate}
+
+
+\begin{definicion}
+    
+Definimos la función de desplazamiento \(\sigma:\Sigma\rightarrow\Sigma\) como:
+\[
+\sigma(s_{0}s_{1}s_{2}...)=(s_{1}s_{2}s_{3}...)
+\]
+%
+Esta función es continua, el conjunto de puntos periódicos de $\sigma$ es denso en $\Sigma$
+
+
+\end{definicion}
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{La ecuación Logística}
+
+Definimos la función itinerario como la que asociará una secuencia infinita \(S(x_{0})=(s_{0}s_{1}s_{2}...)\) de 0s y 1s al punto \(x_{0}\) a través de la regla
+\[
+s_{j}=k \text{ si y solo si } f_{\lambda}^{j}(x_{0})\in I_{k}.
+\]
+
+\begin{teorema}
+
+Cuando $\lambda > 4$ la función itinerario de $f_{\lambda}$,  $S : \Lambda \mapsto \Sigma$ es un homeomorfismo.
+
+\end{teorema}
+
+
+\end{frame}
+
+%------------------------------------------------
+
+\begin{frame}{La ecuación logística}
+
+\begin{teorema}\label{Te3.3.3}
+
+La función  \(S:\Lambda\rightarrow\Sigma\) proporciona una conjugación entre \(f_{\lambda}\) y la función de desplazamiento \(\sigma\).
+
+\end{teorema}
+
+Probamos que la función de desplazamiento $\sigma$ es caótica:
+
+\begin{enumerate}
+    \item densidad (sobre $\Sigma$): $S = \bigcup_{n=0}^\infty \{ (\overline{s_0,s_1,....,s_n}) $ $\text{ tal que } s_i = 0,1\}$ y la continuidad de $\sigma$
+    \item transitividad: $s^{*}=(0100011011000001...)$ y órbita densa $\Rightarrow$ transitiva
+    \item dependencia sensible: $s^{\prime} =(s_{0}s_{1}...s_{n}\hat{s}_{n+1}\hat{s}_{n+2}...)$ donde
+    \(\hat{s}_{j}\) denota "no \(s_{j}\)" (es decir, si \(s_{j}=0\), entonces \(\hat{s}_{j}=1\), o si \(s_{j}=1\), entonces \(\hat{s}_{j}=0\)) cumple 
+    \(d(s,s^{\prime})=1/2^{n}\) y $(d(\sigma^{n+1}(s),\sigma^{n+1}(s^{\prime})) = 2$
+\end{enumerate}
+
+\begin{teorema}
+El sistema dinámico discreto asociado a la función $f_{\lambda}$ es caótico en $\Lambda$ cuando $\lambda > 4$.
+\end{teorema}
+
+\end{frame}
+
+\end{document}
