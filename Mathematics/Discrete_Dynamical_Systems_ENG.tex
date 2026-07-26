@@ -1,0 +1,2071 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+\usepackage{pgfplots}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage[hidelinks]{hyperref}
+\pgfplotsset{compat=1.18}
+
+\usepackage[margin=3cm]{geometry}
+
+\newtheorem{proposicion}{Proposition}[section]
+\newtheorem{teorema}{Theorem}[section]
+\newtheorem{lema}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{ejemplo}{Example}[section]
+\newtheorem{definicion}{Definition}[section]
+
+\title{Discrete Dynamical Systems in Low Dimensions}
+\author{Pablo Borrego Ramos}
+\date{June 2025}
+
+\makeindex
+
+\begin{document}
+
+\setlength{\parskip}{0.25em}  
+
+\makeatletter
+\begin{titlepage}
+    \begin{center}
+        {\huge \bfseries Discrete Dynamical Systems\\[1ex] in Low Dimensions}\\[9ex]
+        \includegraphics[width=1\linewidth]{logo.png}\\[9ex]
+        {\large \bfseries Faculty of Sciences. Joint Degree in Mathematics and Statistics}\\[2ex]
+    \end{center}
+
+    \vfill  % Pushes the bottom content to the bottom of the page
+
+    \begin{flushright}
+        {\large \@author}\\[2ex]
+        {\large \@date}
+    \end{flushright}
+\end{titlepage}
+\makeatother
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\thispagestyle{empty}
+\vspace*{-1cm}
+\noindent José Luis Bravo Trinidad, professor of the
+Department of Mathematics at the University of Extremadura, 
+
+\vspace{0.5cm}	
+\noindent CERTIFIES:
+\vspace{0.5cm}
+
+\noindent That Mr. Pablo Borrego Ramos has completed under his supervision the Bachelor's Thesis and considers that the report meets the necessary requirements for its evaluation.
+
+\vspace{2cm}
+\hfill Badajoz, June 6, 2025. 
+\vspace{4cm}
+%\vfill*
+
+% Supervisor's signature
+\hspace*{-2cm}
+\begin{minipage}[t]{0.7\textwidth}
+\noindent \emph{Signed: José Luis Bravo Trinidad}\\
+\end{minipage}
+%%
+\hspace*{1cm}
+
+\newpage
+
+\thispagestyle{empty}
+\textcolor[rgb]{1.00,1.00,1.00}{.} 
+\newpage
+
+
+\tableofcontents
+
+\newpage
+
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+This work focuses on the analysis of one-dimensional discrete dynamics, addressing key mathematical concepts such as difference equations, bifurcations, and chaotic systems. It explores dynamical systems described by differential equations, examining how they behave through their representation as discrete dynamical systems associated with such functions.
+
+The work delves into the analysis of the stability of fixed points and orbits through graphical and analytical methods, such as the Cobweb diagram and Taylor series expansions. Additionally, bifurcations are investigated, with an emphasis on the qualitative changes that dynamical systems undergo under small perturbations. These tools allow the classification of fixed points and the study of their stability and instability properties.
+
+Another central theme is the introduction to chaos, where concepts such as symbolic dynamics and the logistic equation are analyzed, illustrating how seemingly simple systems can exhibit complex and chaotic behaviors.
+
+Overall, this work provides a solid theoretical framework for understanding and analyzing discrete dynamical systems.
+
+\chapter*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
+
+The study of one-dimensional discrete dynamical systems arises as an essential tool in the mathematical modeling of processes that evolve in discrete time intervals. Unlike continuous systems, where differential equations describe infinitesimal changes, discrete systems capture dynamics that unfold step by step, making them ideal models for natural, social, and technological phenomena where time, or any other variable, is quantified in defined intervals.
+
+Interest in discrete dynamical systems originates both from their structural simplicity and their ability to describe complex phenomena. From a historical point of view, these systems have been key in understanding fundamental problems. A notable example is the famous Fibonacci sequence.
+
+During the 13th century, Fibonacci wondered how rabbit populations evolved each generation, concluding that the number of rabbits in a generation corresponded to the sum of the number of rabbits in the two previous generations, which can be expressed as: $x_n = x_{n-1} + x_{n-2}$. With this example, we can observe that difference equations arise naturally when studying certain behaviors in different areas:
+
+Biology: They model population growth, disease propagation, and natural resource dynamics.
+Economics and finance: They simulate market behavior, predict economic fluctuations, and optimize financial strategies.
+Computing: They appear in iterative algorithms and in the generation of pseudorandom numbers.
+Physics: They describe nonlinear processes in thermodynamic and quantum systems.
+Cryptography: The principles of chaotic dynamics in discrete systems have been applied to design secure encryption schemes.
+
+The appeal of discrete systems also lies in their ability to generate complex phenomena such as bifurcations, chaos, and periodic or quasi-periodic behaviors.
+
+This work is designed to explore, understand, and apply the fundamentals of one-dimensional discrete dynamics. Throughout three chapters, topics ranging from basic concepts to more advanced aspects will be addressed.
+
+In Chapter~\ref{chap:dinamica_discreta}, this relationship is explored, showing how numerical methods, such as Euler's method or Newton's method, allow solving differential equations through discretization. These techniques not only allow us to approximate solutions for differential equations that lack exact analytical solutions, but also establish a natural link with discrete dynamical systems. Starting from an initial value problem, it is shown how difference equations emerge as fundamental tools for studying the evolution of systems at discrete points, thus laying the foundations for a broader and deeper analysis of discrete dynamics.
+
+In Chapter~\ref{chap:bifurcaciones}, qualitative transitions in dynamical systems are studied when the system parameters are modified. Fixed points and their stability, period-doubling bifurcations, and other critical phenomena are explored. These concepts allow modeling changes in real systems, such as the collapse of a population or the transition to chaotic behaviors in biological and economic systems.
+
+In Chapter~\ref{chap:caos}, the phenomenon of chaos is presented, characterized by sensitivity to initial conditions and apparently unpredictable dynamics. Symbolic dynamics is studied and the logistic equation is analyzed as a paradigmatic case. It is demonstrated how simple systems can generate highly complex results.
+
+The objective of this work is to provide a deep understanding of one-dimensional discrete dynamics, from its foundations to its applications. Through practical examples and detailed analyses, the aim is not only to formalize mathematical concepts but also to illustrate their usefulness in concrete problems.
+
+\chapter{Study of Stability in Discrete Dynamical Systems}\label{chap:dinamica_discreta}
+
+This initial chapter provides a robust theoretical framework and practical tools that connect the concepts of continuity and discreteness, as well as the study of the stability of dynamical systems, paving the way for a more intuitive and visual understanding of dynamic behavior through graphical tools such as the Cobweb diagram. With this, the necessary foundation is established to explore more complex phenomena in later chapters, such as bifurcations and chaos.
+
+Given an initial value problem \(\dot{x} = f(x)\), \(x(t_0) = a\), an approximation of the solution is sought on a discrete set of points \(t_1, t_2, \ldots, t_n, \ldots \in \mathbb{R}\), where the distance \(h = t_{n+1} - t_n\) is constant. We begin by studying the existing relationship between difference equations and differential equations. 
+
+\section{Difference equations}
+ 
+Difference equations can be employed as approximations to certain complex differential equations, which is useful when an analytical solution is difficult or impossible to obtain.
+
+A difference equation is an expression of the form:
+\[
+G(n, x_n,x_{n+1}, \ldots, x_{n+k}) = 0, \quad \forall n \in \mathbb{N},
+\]
+%
+Where  $G:\mathbb{N} \times \mathbb{R}^{k+1}  \mapsto \mathbb{R}$ 
+
+We say that a difference equation is of order $k+1$ if after simplifying this expression the terms 
+\( x_{n+k_1} \) and \( x_{n+k_2} \) remain as the largest and the smallest, where \( k +1= k_1 - k_2 \).
+
+Furthermore, we say that a difference equation of order $k+1$,  
+
+$G(n, x_n,x_{n+1}, \ldots, x_{n+k}) = 0, \, \forall n \in \mathbb{N}$ is explicit of order $k+1$ when we can express it in the form: 
+\[
+G(n, x_n,x_{n+1}, \ldots, x_{n+k-1}) = x_{n+k}, \quad \forall n \in \mathbb{N},
+\]
+%
+If $G$ is linear, that is, it can be expressed in the form:
+\[
+p_0(n)x_{n+k} + p_1(n)x_{n+k-1} + \dots + p_k(n)x_{n} = g(n),
+\]
+where the coefficients \( p_i \) are functions defined on \( \mathbb{N} \)
+
+We call a solution of the difference equation any function 
+$
+x : \mathbb{N} \mapsto \mathbb{R}
+$ 
+that satisfies the above equation.
+The image of the solutions of the equations will be called orbit, that is, the set $\{x_n\colon n\in\mathbb{N} \}$. 
+
+Given an explicit equation of order $k+1$, each solution is determined by $x_0, x_1 \ldots x_{k}$ initial values, since 
+
+$G(n,x_{0}, \ldots, x_{k}) = x_{k + 1}, \ldots$  
+$ G(n, x_n,x_{n+1}, \ldots, x_{n+k-1}) = x_{n+k} \ldots$.
+
+To construct a solution of an equation of order $k$, exactly $k$ initial conditions $x_0, x_1 \ldots x_{k-1}$ are needed. 
+
+If these coefficients are constants, the equation takes a simpler form:
+\[
+a_0x_{n+k} + a_1x_{n+k-1} + \dots + a_kx_{n} = g(n).
+\]
+%
+We distinguish between an autonomous equation when time $n$ does not appear explicitly in the equation, and non-autonomous when it does.
+
+In this work we will focus on one-dimensional, first-order, autonomous, and explicit difference equations, that is, when the function $G$ has domain $\mathbb{N} \times \mathbb{R}$ and the difference equation is of the form:
+\[x_{n+1} = f(x_n),\quad \text{where } f : \mathbb{R} \mapsto  \mathbb{R} \]
+
+\subsection{The Cobweb diagram}
+
+Next, we present an illustrative method that allows us to obtain a graphical representation of the orbits of the solutions of a differential equation.
+
+In general, the study of the fixed points of a scalar function is equivalent to the study of the zeros of the function $f(x) - x $, graphically, the intersection of the function $f$ with the identity function.
+
+Given a scalar function $f$ and a point $x_0$, we consider the difference equation $x_{n+1} = f(x_n)$, let $\{ x_0$, $f(x_0)$, $f^2(x_0)$, $\ldots \}$ be a solution of said difference equation, let us denote it $ \{ x_0$, $x_1$, $x_2 $, $\ldots \}$. To obtain a graphical representation of the dynamics of the solution we follow these steps:
+
+\begin{enumerate}
+    \item Take the point $(x_0,x_1)$.
+    \item Take the point that intersects the identity with the horizontal line passing through $(x_0,x_1)$, that is, $(x_1,x_1)$
+    \item Take the point that intersects $f$ with the vertical line passing through $(x_0,x_1)$, this is $(x_1,f(x_1))$
+\end{enumerate}
+
+By repeating this process iteratively we obtain a graphical representation of the orbit, and by drawing the steps we obtain a broader view of the dynamics of the function.
+
+Next, we show an example that illustrates how the dynamics of a difference equation depends greatly on the linear part of the equation.
+
+\begin{ejemplo}
+
+Consider the linear difference equation:
+\[
+x_{n+1} = ax_n, \quad
+\]
+where \( a \) is a real parameter. It is easy to see that the orbit of an initial value \( x_0 \) is the set of points \( x_n = a^n x_0 \), for \( n = 0, 1, 2, \ldots \). The Cobweb diagrams for the parameter values \( a = 2.0 \), \( a = 0.5 \), \( a = -0.5 \), \( a = -2.0 \), \( a = 1.0 \) and \( a = -1.0 \) are shown in Figure~\ref{fig:Figura1}. Where the Cobweb procedure is shown in action on the function $f(x) = ax$ for different values of $a$ and taking $x_0 = 1$ as the initial value. 
+
+Note that when \( a > 0 \), the orbit is monotonically increasing or decreasing on one side of the fixed point. However, when \( a < 0 \), an orbit alternately jumps to each side of the origin and $f'(x)$ is not strictly greater than $0$, something that does not occur in scalar differential equations due to the existence and uniqueness of solutions, which ensures that solutions are always on one side of $0$. 
+We consider the particular cases $a = \pm 1$.
+
+When $a = 1$ the function is the identity and therefore all elements of $\mathbb{R}$ are fixed points.
+
+When $a = -1$ we have $x_{n+1} = - x_{n}$ and therefore $x_{n+2} = x_{n}$, in this case we have no fixed points other than the origin.
+
+Let us study the general cases $|a| < 1$ and $|a| > 1$.
+
+When $|a| < 1$ starting from any point $x_0$ we have $x_{n+1} = a^{n+1}x_0$, since $|a| < 1$ it follows that $a^{n+1} \to 0$ as $n \to \infty$, therefore the limit of the solution $x_{n+1} \to 0$.
+On the other hand, when $|a| > 1$ the opposite occurs, that is, since $a^{n+1} \to \infty$ as $n \to \infty$, therefore, the solution $x_{n+1} = a^{n+1}x_0$ of the difference equation tends to $\infty$.
+    
+\end{ejemplo}
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig3.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = ax$ when $a = 0.5$}
+        \label{fig:mi_imagen_5}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig4.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = ax$ when $a = -0.5$}
+        \label{fig:mi_imagen_4}
+    \end{subfigure}
+    \caption{}
+    \label{fig:Figura1}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig33.png}
+        \caption{Cobweb diagram for the function $f(x) = ax$ when $a = 1$}
+        \label{fig:mi_imagen_51}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig32.png}
+        \caption{Cobweb diagram for the function $f(x) = ax$ when $a = -1$}
+        \label{fig:mi_imagen_41}
+    \end{subfigure}
+
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig2.png}
+        \caption{Cobweb diagram for the function $f(x) = ax$ when $a = 2$}
+        \label{fig:mi_imagen_2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{fig5.png}
+        \caption{Cobweb diagram for the function $f(x) = ax$ when $a = -2$}
+        \label{fig:mi_imagen_3}
+    \end{subfigure}
+    \caption{Cobweb diagram for $a = 0.5, -0.5 , 1, -1, 2, -2$.}
+    \label{fig:Figura2}
+\end{figure}
+
+
+\section{Some difference equations}
+
+In this section, we will show some examples of difference equations that appear in other parts of mathematics, specifically, in differential equations and numerical methods. But first, let us define a fundamental concept in the study of dynamics:
+
+\begin{definicion} 
+Given a function $f: \mathbb{R} \rightarrow \mathbb{R}$ and a point $x_0$ we call the orbit of $x_0$ the sequence $ \{x_0, f(x_0), f^2(x_0) \dots \}$ which we will denote by $\gamma^+(x_0)$.
+\end{definicion}
+
+The orbit of a function $f$ at a point $x_0$ is nothing more than the solution of the difference equation $x_{n+1} = f(x_n)$ with initial condition $x_0$.
+
+\subsection{Euler's method}
+
+Discretization consists of converting a continuous differential equation into a difference equation, evaluating it at a finite or countably infinite set of points in time. This allows approximating the solution of the differential equation through a sequence of discrete values.
+
+Next, we will explain Euler's method, which is the simplest method that establishes a direct relationship between differential equations and difference equations. This method allows approximating the solution of a differential equation through a series of discrete values, facilitating its numerical resolution through difference equations.
+
+Euler's method discretizes the derivative of the function by replacing \(\dot{x}(t)\) with the difference quotient \((x_{n+1} - x_n)/h\). Thus, the differential equation \(\dot{x} = f(x)\) is transformed into a difference equation:
+\[
+x_{n+1} = x_n + h f(x_n).
+\]
+%
+Given $x_0$, all other approximate values $x_1, x_2, \ldots, x_n, \ldots$ can be calculated in succession using this formula. This sequence of numbers is the solution of the difference equation with initial value $x_0$.
+
+
+
+We will illustrate the above procedure with the logistic equation:
+\[
+\dot{x} = ax(1 - x), \quad  a > 0.
+\]
+%
+ Where the parameter \( a \) represents the intrinsic growth rate in a population model. This equation describes how a population grows rapidly when it is small and resources are abundant, but eventually its growth slows down and stabilizes due to the limitation of available resources. The term \( (1 - x) \) models the effect of these limited resources, reducing the growth rate as \( x \) approaches the maximum value of \( x = 1 \).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig1.png}
+    \caption{Logistic equation when \( a = 2 \).}
+    \label{fig:mi_imagen}
+\end{figure}
+
+This difference equation is widely used in biology and social sciences to represent population growth where resources are limited. In the illustrated case, when we take the initial value \( x(0) = 1 \), the population starts at its maximum capacity and does not grow beyond that point, reflecting an equilibrium situation. On the other hand, if \( x(0) \) is small, the population will initially grow almost exponentially due to the abundance of resources, but eventually its growth rate will decrease until it stabilizes at \( x = 1 \), known as the carrying capacity of the system. 
+
+Let us approximate the logistic equation with Euler's algorithm and define
+\[
+b = ha
+\]
+%
+to obtain the following difference equation:
+\[
+x_{n+1} =x_n + bx_n(1-x_n) = bx_n \left( \frac{1 + b}{b} - x_n\right). 
+\]
+%
+From this formula we can determine the values $x_0,x_1,x_2, \dots$, which represent the value taken by the solution of $\dot{x}(t) = f(x)$ at the instants $nh$. Note that the smaller $h$ is, the more information we will have about the solution. 
+
+Let us study the role that $h$ plays as we increase the value of $a$; we can study this relationship through $b$. If $b$ is very small, that is, if $h$ is very small relative to $a$, then, for any initial value in the interval $(0, 1)$, the solution of the above difference equation converges monotonically to $1$ as $n \to +\infty$.
+
+To see this, one must consider the function that gives rise to said difference equation, $g(x) = x + bx(1-x)$, then $g'(x) = 1 - 2bx$, when $b$ is small $g'(x) > 0 \; \forall x \in (0,1)$ and therefore $x_{n+1} > x_n \; \forall n \in \mathbb{N}$. On the other hand, if $g'(x)$ vanishes in the interval $(0,1)$ said value is a local maximum, and since $g(1) = 1$ we conclude that in that case the sequence would not be monotone; since this only occurs for large values of $b$ we conclude that when $b$ is small the solution of the difference equation converges monotonically to $1$.
+
+
+
+The difficulties begin to occur when $b > 1$. Since $b = ha$, let us take, for example, $a = 1000.0$ and $h = 0.002$. Numerically, $h = 0.002$ seems to be a small step size, but it is overcompensated by the value of $a$ in the differential equation. For example, the solution of the above difference equation with $b = 1.3$ and $x_0 = 0.567$, shown in Figure~\ref{Figura3}, bears little resemblance to the corresponding orbit of the differential equation. These problems will be studied in more depth later.
+
+
+\begin{figure}[H]
+
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig50.png}
+    \caption{Cobweb diagram for the function $f(x) = x + bx(1-x)$ with $b = 1.3$ and $x_0 = 0.567$}
+    \label{Figura3}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig37.png}  % Replace with your image name
+        \caption{Cobweb diagram of the logistic equation when $a = 2$}
+        \label{fig:mi_imagen_9}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig38.png}  % Replace with your image name
+        \caption{Cobweb diagram of the logistic equation when $a = 2.5$}
+        \label{fig:mi_imagen_10}
+    \end{subfigure}
+    \caption{}
+    \label{fig:mi_imagen_total1.2}
+\end{figure}
+
+
+
+ 
+\subsection{Newton's method}
+
+This method has as its main function finding the solutions of an equation $ f(x) = 0$. We start from a function \( f(x) \) and an initial point \( x_0 \).
+
+Let \( x_1 \) be the intersection point between the \( x \)-axis and the tangent line to the graph of \( f(x) \) at \( (x_0, f(x_0)) \).
+The equation of the tangent is:
+\[
+y - f(x_0) = f'(x_0)(x - x_0)
+\]
+%
+Solving for the intersection point with the \( x \)-axis,
+\[
+x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}.
+\]
+%
+Repeating the process,
+\[
+x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}
+\]
+%
+As an example, consider the function $f(x) = x^2 - 2$, which has two zeros at $\pm \sqrt{2}$. For this function, the above difference equation becomes:
+\[
+x_{n+1} = \frac{x_n}{2} + \frac{1}{x_n}. 
+\]
+%
+If we start with an initial value, for example, $x_0 = 3$, then the solution of this difference equation converges to $\sqrt{2}$:
+\[
+3.00000,\quad 1.833333,\quad 1.46212,\quad 1.41499,\quad 1.41421,\quad \ldots
+\]
+%
+In fact, it can be shown that any solution with initial value $x_0 > 0$ converges to $\sqrt{2}$, and with $x_0 < 0$ converges to $-\sqrt{2}$. A detailed proof can be found in~\cite{ref5}.
+
+The study of the zeros of $f(x) = x^2 - 2$ is equivalent to the study of the fixed points of the function $f(x) = x^2 - 2 + x$, therefore we can use a Cobweb diagram to obtain the zeros of $f(x) = x^2 - 2$ graphically.
+
+\begin{figure}[H]
+
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig39.png}
+    \caption{Cobweb diagram for the function $f(x) = x^2 - 2 + x$}
+    \label{fig:mi_imagen_cobweb}
+\end{figure}
+
+We observe that the diagram does not manage to approach the fixed points of the function; the orbit shows erratic behavior. We will study this type of behavior in section $3$.
+
+Note that this is nothing more than a particular case of Euler's method taking as differential equation 
+\[
+\dot{x} = - \frac{f(x)}{f'(x)}.
+\]
+%
+
+ 
+\section{Discrete dynamics of scalar functions}
+
+We begin by studying the dynamics of scalar functions, that is, how the solutions of the first-order autonomous difference equation behave as we increase the number of iterations.
+Given a point $x_0$ and a function $f: \mathbb{R} \rightarrow \mathbb{R}$, let $\{x_n \}_{n \in \mathbb{N}}$ be a solution of the difference equation $x_{n+1} = f(x_n)$, let us see what form it takes:
+$x_1 = f(x_0)$, $x_2 = f(x_1) = f(f(x_0))$,  $x_3 = f(x_2) = f(f(f(x_0))) \ldots $, that is, $x_n = f^n(x_0)$
+
+
+For convenience, we will denote $f^n$ as the function $f$ composed with itself $n$ times. The orbit of a point $x_0$ is nothing more than the solution of the difference equation $x_{n+1} = f(x_n)$ taking as initial condition $x_0$. 
+
+
+\begin{definicion}
+
+A one-dimensional discrete dynamical system is a triple $\{E,\mathbb{N}, \varphi\}$ where $E$ is a topological space and $\varphi: D \subset \mathbb{N} \times E \to E$, where $D$ is a region, and it must satisfy the following properties:
+
+\begin{enumerate}
+    \item For all $x \in E$, we have
+    \[
+    \varphi(0, x) = x.
+    \]
+
+    \item For all $s, t \in \mathbb{N}$ and $x \in E$, if $(t, x), (s, \varphi(t, x)) \in D$, then $(t + s, x) \in D$ and
+    \[
+    \varphi(t + s, x) = \varphi(s, \varphi(t, x)).
+    \]
+\end{enumerate}
+
+
+If $\{E, \mathbb{N}, \varphi\}$ is a dynamical system,
+\begin{itemize}
+    \item $E$ is called the state space. $x \in E$ is an initial state.
+    \item $\mathbb{N}$ is called the time space.
+    \item $\varphi$ is called the flow.
+\end{itemize}
+    
+\end{definicion}
+
+
+\begin{definicion}
+Given a function $f: \mathbb{R} \rightarrow \mathbb{R}$ and a point $\hat{x}$, we say that $\hat{x}$ is a fixed point when $f(\hat{x})=\hat{x}$. 
+\end{definicion}
+ 
+\begin{proposicion}
+A point $x_0 \in \mathbb{R}$ is a fixed point of $f $ if and only if it is a constant solution of the difference equation $x_{n+1} = f(x_n)$.
+\end{proposicion}
+
+\begin{proof}
+
+If $x_0$ is a fixed point of $f$ then $f(x_0) = x_0$ and therefore $f^n(x_0) = x_0$, it follows that $x_{n+1} = f(x_n) = f^2(x_{n-1}) = \ldots = f^n(x_0) = x_0$.
+
+If $x_0$ is a constant solution of $x_{n+1} = f(x_n)$ then $f(x_0) = x_0$, that is, $x_0$ is a fixed point.
+
+\end{proof}
+
+\begin{definicion}
+A fixed point $\hat{x}$ of a scalar function $f$ is stable if for all $\varepsilon > 0$ there exists a $\delta > 0$ such that for all $ x_0$ with $|x_0 - \hat{x}| < \delta$ it holds that $|f^n(x_0) - \hat{x}| < \varepsilon $ for all $ n \in \mathbb{N}$. 
+
+On the contrary, we say that a fixed point is unstable when it is not stable, that is, there exists an $ \varepsilon$ such that for all $\delta > 0$ there exists an $x_0$ with $|\hat{x} - x_0| < \delta$ and $|\hat{x} - f^n(x_0)| > \varepsilon $ for some $n \in \mathbb{N}$.
+\end{definicion}
+
+The fact that a fixed point is unstable does not mean that as iterations increase the initial value moves away from the fixed point; moreover, it can happen that after a number of iterations the orbit does not leave the fixed point again, as illustrated in the following example:
+
+\begin{ejemplo}
+
+Let
+\[
+f(x) = 
+\begin{cases}
+2x, & \text{if } -5 < x < 5, \\
+0, & \text{otherwise}.
+\end{cases}
+\]
+This function has a unique fixed point at $0$. If we take an $x_0$ in the support of the function, then the value (in absolute value) of the iterations will increase until it exceeds the maximum values of the support ($5$ and $-5$) and therefore the remaining iterations will end up at the fixed point. This behavior is illustrated in Figure~\ref{fig:mi_imagen22}:
+
+\end{ejemplo}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.45\textwidth]{fig36.png}
+    \caption{Cobweb diagram for the function $f(x) = 2x$ when $-5<x<5$ and $0$ otherwise, taking $x_0 = 0.1$.}
+    \label{fig:mi_imagen22}
+\end{figure}
+
+\begin{definicion}
+
+A fixed point \(\hat{x}\) of $f$ is a global attractor if for each \(x_0 \in \mathbb{R}\), we have
+\[
+\lim_{n \to \infty} x_n = \hat{x}.
+\]
+Where \(x_n = f^n(x_0)\)
+\end{definicion} 
+
+\begin{definicion}
+
+A fixed point \(\hat{x}\) of $f$ is a local attractor if there exists \(\delta > 0\) such that, for each \(x_0 \in (\hat{x} - \delta, \hat{x} + \delta)\), we have
+\[
+\lim_{n \to \infty} x_n = \hat{x}.
+\]
+Where \(x_n = f^n(x_0)\)
+\end{definicion}
+
+That is, a fixed point is a local attractor if it attracts only points that are in a certain neighborhood of it, while it is a global attractor if it attracts all points of the phase space. We must keep in mind that convergence does not necessarily imply monotonicity, that is, if a sequence converges to a point, it does not have to converge monotonically to it, but can alternate between nearby and distant values along its trajectory.
+
+\begin{definicion}
+
+A fixed point $\hat{x}$ of $f$ is said to be globally (locally) asymptotically stable if it satisfies:
+\begin{itemize}
+    \item $\hat{x}$ is stable.
+    \item $\hat{x}$ is a global (local) attractor.
+\end{itemize}
+
+\end{definicion}
+
+Analytically, the above definition can be expressed in the following form.
+
+\begin{definicion}
+
+A fixed point $\hat{x} $ of  $f$ is locally asymptotically stable when it is stable and moreover $\exists r > 0$ such that if an $x_0 \in \mathbb{R}$ satisfies $|x_0 - \hat{x}| < r$ then $f^n(x_0) \rightarrow \hat{x}$ as $n \rightarrow \infty$.
+
+\end{definicion}
+
+The definition of a locally asymptotically stable point may seem redundant, as it appears that every local attractor is stable. This is not true in general; moreover, in discrete dynamical systems where \(f\) is not continuous in the phase space, this is not true in general.
+
+In the rest of this work we will deal only with locally asymptotically stable fixed points; for convenience, we will refer to them as asymptotically stable points.
+
+\begin{definicion}
+
+Given a fixed point $\hat{x} $ of a differentiable scalar function $f$, we say that $\hat{x}$ is a hyperbolic point when $|f'(\hat{x})| \neq 1$.
+\end{definicion}
+
+The stability of a fixed point of a scalar function $f$ is a local property of the dynamics at that point. This allows us, under certain conditions, to study the stability of a fixed point through its linearization. Before studying the Theorem, let us see that translations preserve the dynamics.
+
+\begin{lema}
+Given a function $f$ and a constant $a$, consider the function $g(x) = f(x + a) - f(a)$; then, the solutions of the difference equations $x_{n+1} = f(x_n)$ and $g(x_n - a) = x_{n+1} - a$ are the same.
+    
+\end{lema}
+
+\begin{proof}
+
+Let us see that the change of variables preserves the solutions of the difference equations $x_{n+1} = f(x_n)$. Let $\{x_n\}_{n\in\mathbb{N}}$ be a solution of $x_{n+1} = f(x_n)$, then $\{x_n-a\}_{n \in \mathbb{N}}$ is a solution of $x_{n+1} = g(x_n)$, since $g(x_n - a) = f(x_n - a +a) - f(a) = f(x_n) - a = x_{n+1} - a$.
+On the other hand, if $\{x_n\}_{n\in\mathbb{N}}$ is a solution of $x_{n+1} = g(x_n)$ then $\{x_n+a\}_{n \in \mathbb{N}}$ is a solution of $f(x_n) = x_{n+1}$ since $f(x_n + a) = g(x_n) + a = x_{n+1} + a$.
+
+Since fixed points correspond to constant solutions, $x_0$ is a fixed point of $f$ if and only if $x_0 -a$ is a fixed point of $g$.
+ 
+\end{proof}
+
+Next, we will show that if the fixed point is hyperbolic, then the stability of said point depends on the value of the linearization of the function.
+
+\begin{teorema}\label{Teorema1.3.1}
+Let $f$ be a scalar function of class 1 and $\hat{x}$ a hyperbolic fixed point of $f$.
+\begin{itemize}
+    \item $|f'(\hat{x})| <1$ $\Rightarrow$ $\hat{x}$ is asymptotically stable 
+    \item $|f'(\hat{x})| > 1 $ $\Rightarrow$  $\hat{x}$ is unstable
+\end{itemize}
+\end{teorema}
+
+
+\begin{proof}
+For convenience, through a translation we can consider the point $(0,0)$ instead of $(\hat{x},f(\hat{x}))$. For this, we consider a new variable $ u = x - \hat{x}$ with $x \in \mathbb{R} $ and a new function $g$: 
+$
+g(u) = f(\hat{x} + u) - f(\hat{x}) 
+$
+%
+Evidently $g(0)=0$ and by the previous proposition we know that the change of variable preserves the solutions of the difference equations, and in particular the fixed points. Also, note that $g'(u) = f'(\hat{x} + u)$ .
+ 
+We fix $\varepsilon > 0 $ and define:
+$
+m_\varepsilon =  \min_{|s| \leq \varepsilon}|g'(s)|, \quad M_\varepsilon = \max_{|s| \leq \varepsilon}|g'(s) |
+$
+%
+Which represent the maximum and minimum slope of the function in a neighborhood of the fixed point. Taking \( u \in (-\varepsilon,\varepsilon)\) we have:
+\[
+m_\varepsilon |u| \leq |g(u)| \leq M_\varepsilon |u|.
+\]
+%
+Let us prove this. Suppose that \( u > 0 \). By the Mean Value Theorem (MVT), we know that there exists a \( c \in (0,u) \) such that:
+\[
+g(u) - g(0) = g'(c)(u - 0)
+\]
+%
+Since \( g(0) = 0 \), we have \( g(u) = g'(c)u \). Since \( c \in (0,u) \subset (0,\varepsilon) \), it holds that \( m_\varepsilon \leq |g'(c)| \leq M_\varepsilon \), and therefore:
+\[
+|g(u)| = |g'(c)u| = |g'(c)| |u| \leq M_\varepsilon |u|
+\]
+%
+and also:
+\[
+m_\varepsilon |u| \leq |g'(c)| |u| = |g'(c)u| = |g(u)|
+\]
+%
+The proof for the case \( u < 0 \) is analogous.
+
+If $g^n(u) \in (-\varepsilon,\varepsilon)$ for $n \in \{0,1 \ldots k\}$, where $k \in \mathbb{N}$, then it holds that:
+$
+|u|  m^n_\varepsilon \leq |g^n(u)| \leq  |u|  M^n_\varepsilon \quad \forall n \in \{0,1 \ldots k\}
+$
+%
+Let us prove this by induction. We have already proved it for $n = 1$; let us assume it is true for $n-1$ and prove it for $n$:
+$|g^n(u)| = |g^{n-1}(g(u))| \leq |g(u)|M_\varepsilon^{n-1} \leq |u|M_\varepsilon M_\varepsilon^{n-1} = |u| M_\varepsilon^{n}$
+and
+%
+$|g^n(u)| = |g^{n-1}(g(u))| \geq |g(u)|m_\varepsilon^{n-1} \geq |u|m_\varepsilon m_\varepsilon^{n-1} = |u| m_\varepsilon^{n}$
+%
+When \( |g'(0)| < 1 \), since \( g \) is of class \( \mathcal{C}^1 \), there exists a neighborhood of \( 0 \) in which \( |g'(x)| \) is less than 1. That is, there exists \( \delta > 0 \) such that \( M_\delta < 1 \). If moreover \( |u| \leq \delta \), we have:
+\[
+|g(u)| \leq M_\delta |u| < |u| < \delta.
+\]
+%
+Now, let us see that \( |g^n(u)| < \delta \) for all \( n \in \mathbb{N} \). We will prove this by induction. We have already proved the base case for \( n = 1 \). Suppose it holds for \( n - 1 \), that is:
+\[
+|g^{n-1}(u)| < \delta.
+\]
+Then,
+$
+|g^n(u)|  = |g^{n-1}(g(u))| \leq |g(u)|  M^{n-1}_\delta   \leq |u| M_\delta  M^{n-1}_\delta = |u|  M^{n}_\delta   \leq \delta  M^n_\delta    < \delta
+$
+%
+We have shown that:
+$ |g^n(u)| \leq \delta \quad \forall n \in \mathbb{N}$
+%
+With this we have achieved that for all $\varepsilon  > 0$ $  \exists  \delta  $ such that if $ |u-0| < \delta $ then $ |g^n(u) - g(0)| < \varepsilon$  $ \forall n \geq 0 $, that is, the point $(0,0)$ is stable. 
+Moreover, it is asymptotically stable since $ M_\delta  < 1$ then $ M^n_\delta  \rightarrow 0$ as $n \rightarrow +\infty$ and since $|g^n(u)| \leq |u| M^n_\delta   $ then $ g^n(u) \rightarrow g(0)=0$ as $n \rightarrow +\infty$
+
+We have proved the first part of the Theorem; now let us study the stability when $|g'(0)| > 1$.
+
+Since $g$ is of class $1$ there exists a $\delta > 0$ such that if $|x - \hat{x}| < \delta$ then $|g'(x)| > 1$; this is proved by reasoning identically to the previous case. 
+
+To prove that $\hat{x}$ is unstable it suffices to show that there exists an  $\hat{n} \in \mathbb{N}$ such that $g^{\hat{n}}(u) \notin (-\delta,\delta)$ for any $u \in (-\delta,\delta)$ since then for all $\varepsilon > \delta$ and all $\tau > 0$ if $|x| < \tau$ then $|g^{\hat{n}}(x)| > \delta $ when $|x| < \delta$.
+
+Suppose that $g^n(u) \in (-\delta,\delta)$ for all $n \in \mathbb{N}$ and all $u \in (-\delta,\delta)$.
+Since $|f'(\hat{x})| > 1$ we have $ \exists \delta > 0 \text{ such that } m_\delta > 1$, taking into account the following inequality:
+\[
+|u| m^n_\delta \leq |g^n(u)|
+\]
+%
+We would then have that $|u|m^n_{\delta}$ is bounded, which is a contradiction, since its limit is infinite. From this contradiction we obtain that for all $\delta$, $g^n(u) \notin (-\delta,\delta)$ for some $n\in\mathbb{N}$ and some $u\in (-\delta,\delta)$, that is, the point is unstable.
+
+\end{proof}
+
+Note that when orbits are bounded and the fixed point is stable, the orbit can exhibit erratic behavior that we will study later; this was illustrated in Figure~\ref{fig:mi_imagen_cobweb}.
+
+The previous theorem says that if a fixed point is hyperbolic then it is either stable or unstable.
+But what happens when the fixed point is not hyperbolic? In this case, the first derivative does not give us information about stability; however, we can study stability through the second and third derivatives. Next, we show a series of examples in which the fixed points are not hyperbolic and have different stability. We will end the section with a Theorem that provides a solution to this situation.
+
+In the following example, we illustrate the stability of a non-hyperbolic fixed point in the case where \( f'(\hat{x}) = 1 \) and \( f''(\hat{x}) > 0 \).
+
+\begin{ejemplo}
+
+Consider the scalar function $f(x) = x + x^2 $, with derivatives $f'(x) = 2  x + 1$ and $f''(x) = 2$. In this function $0$ is a fixed point and non-hyperbolic since $f(0) = 0 $ and $f'(0) = 1$. In Figure ~\ref{fig:mi_imagen_total1.6} we can observe that when $x_0 > 0$ (Diagrams $a) \text{  and  } c)$) the orbit diverges to infinity, the larger $x_0$ is the faster it diverges; on the other hand, when $x_0 < 0$ (Diagrams $b) \text{ and } d)$) the iterations tend to the fixed point $0$.
+
+For a more detailed study let us focus on the analytical expression of the function $f$; we can observe that if we take $x_0 \in (0, \infty)$ it tends to $\infty$, on the other hand, if we take an initial value $x_0 \in [-1,0]$ it tends to the fixed point $0$; finally, if we take $x_0 \in (-\infty, -1)$ it is observed that $x_1 
+ = f(x_0) = x_0 + x_0^2 > 0$ since as $x_0 < -1$ then $x_0^2 > x_0$, therefore in this case after one iteration we pass to the case $x_0 \in (0,\infty)$ which we have already seen diverges to infinity. For this reason we conclude that the fixed point $0$ is unstable since for every neighborhood $(-\delta,\delta)$ of $0$ it holds that $\forall x \in (0, \delta) \; f^n(x) \mapsto \infty$ as $n \to \infty$. 
+    
+\end{ejemplo}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig6.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = x + x^2 $ starting from $x_0 = 0.2$}
+        \label{fig:mi_imagen_24}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig7.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = x + x^2 $ starting from $x_0 = -0.2$}
+        \label{fig:mi_imagen_25_1}
+    \end{subfigure}
+
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig34.png}  % Replace 
+        \caption{Cobweb diagram for the function $f(x) = x + x^2 $ starting from $x_0 = 1$}
+        \label{fig:mi_imagen_26_1}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig35.png}  % Replace 
+        \caption{Cobweb diagram for the function $f(x) = x + x^2 $ starting from $x_0 = -1$}
+        \label{fig:mi_imagen_27_1}
+    \end{subfigure} 
+    \caption{}
+    \label{fig:mi_imagen_total1.6}
+\end{figure}
+
+In the following example, we show the stability of a hyperbolic fixed point when $f'(\hat{x}) = -1$ and $f''(\hat{x}) < 0$. 
+
+\begin{ejemplo}
+
+Consider the scalar function $f(x) = -x -3x^2$ , with derivatives $f'(x) = -1 - 6x$ and $f'(x) = - 6$. As in the previous example, $0$ is a hyperbolic fixed point of $f$ since $f(0) = 0$ and $f'(0) = 1$; through the images we can see that it is a stable fixed point, see Figure~\ref{fig:mi_imagen_8}; a more rigorous way to see this is to consider the second iterate of $f$, $f^2(x) = -27x^4 -18x^3 + x$, taking a value close to $0$, $f^2$ returns a value closer to $0$, therefore the remaining iterations on said point tend to $0$. 
+
+\end{ejemplo}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig8.png}
+    \caption{Cobweb diagram for $f(x) = -x -3x^2$ taking as initial value $x_0 = 0.3$}
+    \label{fig:mi_imagen_8}
+\end{figure}
+
+
+Finally, we show examples of stability when the fixed point is not hyperbolic and the second derivative at the fixed point is zero.  
+
+\begin{ejemplo}
+
+Consider the scalar functions $f(x) = x - x^3$ and $g(x) = -x + x^3$, with derivatives $f'(x)= 1 - 3x^2$ and $g'(x) = -1 + 3x^2$; in $f$ the $0$ is a stable fixed point while in $g$ it is unstable, see Figure~\ref{fig:mi_imagen_total1.8_100}. In both cases it is not hyperbolic; one can also study stability through the second iterates, which in this case are $ f^2(x) = x + 2x^3 - 3x^5 + 3x^7 +x^9$ and $g^2(x) =  x - 2x^3  -3x^5 + 3x^7 + x^9$. In both cases the leading coefficient is positive, therefore, if we take a sufficiently large initial value, the iterations will tend to $\infty$. 
+\end{ejemplo}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig9.png}  % Replace with your image name
+        \label{fig:mi_imagen_9_1}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig10.png}  % Replace with your image name
+        \label{fig:mi_imagen_10_1}
+    \end{subfigure}
+    \caption{Cobweb diagrams for the functions $f(x) = -x + x^3 $ and $f(x) = x - x^3 $ starting from $x_0 = 0.7$}
+    \label{fig:mi_imagen_total1.8_100}
+\end{figure}
+
+Next, we study a lemma and a theorem that generalizes all the examples seen above:
+
+\begin{lema}\label{lemasigno}
+Let $f$ be a function of class $n+1$ with some nonzero derivative, $x_0$ a point of $f$, and let $m \leq n+1$ be the smallest integer for which the derivative of $f$ is nonzero, then there exists a neighborhood of $x_0$ in which the functions
+$
+f(x) - f(x_0) \quad \text{ and } \quad \frac{f^{(m)}(x_0)}{m!}(x - x_0)^m 
+$
+have the same sign.
+\end{lema}
+
+\begin{proof}
+
+Considering the Taylor expansion of $f$ at the point $x_0$
+\begin{align*}
+f(x) = f(x_0) + \frac{f^{(m)}(x_0)}{m!}(x - x_0)^m + \ldots 
++ \frac{f^{(n)}(x_0)}{n!}(x - x_0)^n 
++ R_{n+1,x_0}(x)
+\end{align*}
+%
+Where $\frac{R_{n+1,x_0}(x)}{(x-x_0)^{n+1}} \to 0$ as $x \to x_0$. Equivalently
+\begin{align*}
+f(x) - f(x_0) = (x - x_0)^m \bigg( \frac{f^{(m)}(x_0)}{m!} + \ldots 
++ \frac{f^{(n)}(x_0)}{n!}(x - x_0)^{n-m} 
++ R_{n+1,x_0}(x) \bigg)
+\end{align*}
+%
+Since the limit of 
+$
+\left( \frac{f^{(m)}(x_0)}{m!} +  \ldots 
++ \frac{f^{(n)}(x_0)}{n!}(x - x_0)^{n-m} +  R_{n+1,x_0}(x) \right)
+$
+%
+as $x \to x_0$ is $\frac{f^{(m)}(x_0)}{m!}$, there is a neighborhood in which the above expression has the same sign as $\frac{f^{(m)}(x_0)}{m!}$, so in said neighborhood $f(x) - f(x_0)$ has the same sign as $(x - x_0)^m \frac{f^{(m)}(x_0)}{m!}$
+
+\end{proof}
+
+This theorem has been developed by the author in order to provide more clarity to the examples shown above. In it, we delve deeper into the characterization of the dynamics of functions from their linearization, but first we must define some concepts.
+
+\begin{definicion}
+
+We say that a fixed point $\hat{x}$ of $f$ is asymptotically stable from the right (left) when it is stable and moreover $\exists r > 0$ such that if an $x_0 \in \mathbb{R}$ satisfies $x_0 - \hat{x} < r$ $( \hat{x} - x_0 < r)$ then $f^n(x_0) \rightarrow \hat{x}$ as $n \rightarrow \infty$.
+
+\end{definicion}    
+
+\begin{teorema}\label{Teorema1.3.2}
+Given a function $f \in \mathcal{C}^3$ and a fixed point $\hat{x} $ of $f$:
+
+\begin{itemize}
+    \item[1.] If $f'(\hat{x}) = 1$, then we have three cases to consider:
+    \begin{itemize}
+        \item[(a)] If $f''(\hat{x}) > 0$, then $\hat{x}$ is asymptotically stable from the left.
+        \item[(b)] If $f''(\hat{x}) < 0$, then $\hat{x}$ is asymptotically stable from the right. 
+        \item[(c)] If $f''(\hat{x}) = 0$ two cases can arise:
+            \begin{itemize}
+                \item[(c.1)] $f'''(\hat{x}) > 0$, then $\hat{x}$ is asymptotically stable
+                \item[(c.2)] $f'''(\hat{x}) < 0$, then $\hat{x}$ is unstable.
+            \end{itemize}
+    \end{itemize}
+
+    \item[2.] If $f'(\hat{x}) = -1$ and $3 f''(\hat{x})^2 - 2 f'''(\hat{x}) \neq 0$, then we have two cases to consider:
+    \begin{itemize}
+        \item[(a)] If $f'''(\hat{x}) + \frac{3}{2} f''(\hat{x})^2  < 0$, then $\hat{x}$ is asymptotically stable.
+        \item[(b)] If $f'''(\hat{x})  + \frac{3}{2} f''(\hat{x})^2 > 0$, then $\hat{x}$ is unstable.
+    \end{itemize}
+\end{itemize}
+\end{teorema}
+
+\begin{proof}
+Suppose without loss of generality that $\hat{x} = 0$.
+
+Let us begin by proving $1.a)$; for this we develop the Taylor series of $f'(x)$ of first order, since $f'(0) = 1$ and $f''(0) \neq 0$ we have:
+$
+f(x) = f(0) + f'(0)x + \frac{f''(0)}{2!}x^2 +  R_{3,0} = x + f''(0)x^2  + R_{3,0}
+$
+%
+Where $R_{3,0} \to 0$. Reasoning similarly to the previous lemma we obtain that $f(x) - x$ and $f''(0)x^2$ have the same sign in a neighborhood $(-\mu,\mu)$.
+When $f''(0) > 0$ there exists a neighborhood in which $f''(x) > 0$, considering the intersection of said neighborhood with $(-\mu,\mu)$ and renaming it as $(-\delta,\delta)$.
+
+If $x_0 \in (-\delta,\delta)$ then $x_1 = f(x_0) > x_0$ and in general $x_{n+1} = f(x_n) > x_n$ until $x_n$ leaves $(-\delta,\delta)$. 
+
+If $x_0 > 0$ then $x_n$ leaves the interval $(-\delta,\delta)$ as $n \to \infty$, therefore when $x_0 > 0$ the $0$ is not stable.
+
+If $x_0 < 0$ suppose that $|\frac{f''(0)}{2!}x^2 + \frac{f^{(3)}(\xi)}{(3)!}x^{3} | < \frac{1}{2}$ for all $x \in (-\delta,\delta)$ then $x_1 = f(x_0) = x_0 + \frac{f''(0)}{2!}x_{0}^2 + \frac{f^{(3)}(\xi)}{(3)!}x_{0}^{3} < x_0 - \frac{1}{2} x_0  =\frac{1}{2} x_0  < 0$, that is, $x_0 < x_1 < 0$, by induction we arrive at $x_n < x_{n + 1} < 0$, therefore, $x_n \to 0$ as $n \to \infty$, that is, when $x_0 < 0$ the $0$ is stable. We have shown that $0$ is asymptotically stable from the right. To prove $1.b)$ a similar reasoning is followed.
+
+$1.\,c.\,1) \text{ and } 1.\,c.\,2)$
+
+When $f''(0) = 0$ we develop the Taylor series of $|f'(x)|$ of first order, since $f'(0) = 1$ we have:
+\[
+\begin{split}
+|f'(x)| &= |f'(0)| + \frac{f'(0)}{|f'(0)|} f''(0)x  + \frac{1}{2} \frac{f'''(0) |f'(0)| - f'(0) f''(0)^2}{|f'(0)|^2} x^2  +   R_{3,0} \\& = 1 + \frac{f'''(0)x^2}{2} +  R_{3,0}
+\end{split}
+\]
+%
+Since $f'''(0) > 0$, there exists a neighborhood of $0$ of length $2 \delta$ in which $f'''(x) > 0$. Therefore when $x \in (- \delta, \delta)$ we have $\frac{f'''(0)x^2}{2} > 0$, thanks to the previous lemma we deduce that $|f'(x) - 1 |> 0$, by Theorem $1$ we conclude that $0$ is unstable.
+
+
+On the other hand, when $f'''(0) < 0$ there exists a neighborhood of $0$ of length $2 \delta$ in which $f'''(x) < 0$. Therefore if $x \in (-\delta,\delta)$ we have $\frac{f'''(0)x^2}{2} < 0$, thanks to the previous lemma we deduce that $|f'(x) - 1 < 0|$, by Theorem $1$ we conclude that $0$ is asymptotically stable. When $f'''(0) = 0$ the stability is determined by $f''''(0)$.
+
+$2.a) \text{ and } b)$
+
+It suffices to take $g = f \circ f = f^2$. Note that if $0$ is a fixed point of $f$, then it is also a fixed point of $g$. Using the chain rule:
+$
+g'(x) = \frac{d}{dx} f(f(x)) = f'(f(x)) f'(x).
+$
+%
+This implies that the stability of a fixed point of $f$ is determined by the stability of $g$ since if $\dot{x}$ is a fixed point of $f$:
+$
+g'(\dot{x}) = f'(f(\dot{x})) f'(\dot{x}) = f^{2}(x)'(\dot{x}).
+$
+%
+Moreover,
+$
+g'(0) = \left[ f'(0) \right]^2 = 1
+$
+%
+Next, we compute $g''(0)$. We obtain:
+$
+g''(x) = f'(f(x)) f''(x) + f''(f(x)) \left[ f'(x) \right]^2,
+$
+$
+g''(0) = f'(0) f''(0) + f''(0) \left[ f'(0) \right]^2 = 0 \quad (\text{since } f'(0) = -1).
+$
+%
+Finally, $g'''(0)$ is of the form:
+$
+g'''(0) = -2 f'''(0) - 3 \left[ f''(0) \right]^2 =  \frac{f'''(x)}{f'(x)} - \frac{3}{2} \left[ \frac{f''(x)}{f'(x)} \right]^2.
+$
+%
+Then when $\frac{f'''(x)}{f'(x)} - \frac{3}{2} \left[ \frac{f''(x)}{f'(x)} \right]^2 > 0$ we are in case $1.b)$ and when $\frac{f'''(x)}{f'(x)} - \frac{3}{2} \left[ \frac{f''(x)}{f'(x)} \right]^2 < 0$ we are in case $1.c)$
+\end{proof}
+ 
+
+\chapter{Bifurcations in One-Dimensional Discrete Systems}\label{chap:bifurcaciones}
+
+In this chapter we will study the dynamics of perturbations of (one-dimensional discrete) monotone dynamical systems. Let us begin by seeing what a perturbation is:
+
+Given a function $F$, we say that a perturbation of the dynamical system associated with $f$ is a function of the form:
+$
+F : \mathbb{R}^k \times \mathbb{R} \rightarrow \mathbb{R} \quad  \quad (\lambda,x) \rightarrow F(\lambda,x) \quad \text{s.t.}  \quad F(0,x)=f(x)
+$
+%
+If the function $F :\mathbb{R}^k \times  K \subset \mathbb{R} \rightarrow \mathbb{R}$ where $K$ is compact, is $\mathcal{C}^1$ then for small values of $\|\lambda\|$ the dynamical system of $F$ is monotone in $x$.
+
+We will study the fixed points of $x\to F(\lambda,x)$ for values of $\lambda$ close to zero from the linearization of $F$ at the fixed point.
+
+Being a very broad concept, we will focus on the study of functions that possess certain properties; to define these properties, we introduce the following concepts:
+
+\begin{definicion}
+Given a function $f$ and a solution $\{x_0,x_1,x_2 , \ldots\} $ of $x_{n+1} = f(x_n)$, we say that the solution is monotonically increasing when $x_n \leq x_{n+1}$ $\forall n \in \mathbb{N}$ and decreasing when $x_n \geq x_{n+1}$ $\forall n \in \mathbb{N}$; we say it is monotone when it is monotonically increasing or decreasing. Finally, we say that the dynamical system associated with a function is monotone when every orbit is monotone. 
+\end{definicion}
+
+\begin{lema}
+
+Let $f$ be a $\mathcal{C}^1$ function; if $f'(x) \geq 0$ $\forall x \in \mathbb{R}$ then the dynamical system associated with $f$ is monotone.
+    
+\end{lema}
+
+\begin{proof}
+
+By the mean value theorem we have that for all $n \in \mathbb{N}$ it holds that $x_{n+1} - x_n = f(x_n) - f(x_{n-1}) = f'(\hat{x}) (x_{n} - x_{n-1})$, where $\hat{x} \in (x_{n}, x_{n-1})$,
+applying this process $n$ times and taking into account that by hypothesis $f'(x) \geq 0$ $\forall x \in \mathbb{R}$, we have that $x_{n+1} - x_{n}$ has the same sign as $x_{1} - x_{0}$ $\forall n \in \mathbb{N}$. And therefore if $x_1 \leq x_0$ then $x_{n+1} \leq x_n$ for all $n$; on the other hand, if $x_1 \geq x_0$ the opposite occurs, $x_{n+1} \geq x_n$; since this holds for any initial value $x_0$ we conclude that the dynamical system associated with $f$ is monotone.
+
+\end{proof}
+
+If $f'(x) > 0$ $\forall x \in \mathbb{R}$ then $f$ is injective since if it were not, there would exist $x$ and $y$ such that $f(x) = f(y)$ and by the MVT we have $0 = f(x) - f(y) = f'(c) (x - y)$ with $c \in (x,y)$; since $x \neq y$ it must be that $f'(c) \neq 0$, leading to a contradiction.
+Since $f$ is injective, $f^{-1}$ exists defined on the image of $f$. We will denote $f^{-n}$ as the composition of $f^{-1}$ $n$ times.
+
+We begin by analyzing the behavior of bifurcations near fixed points of functions with monotone dynamical systems.
+
+\section{Hyperbolic fixed points}
+
+Next, we study the fixed points of a perturbation of the function $f$ under certain hypotheses:
+
+\begin{proposicion}
+    
+Suppose that $f \in \mathcal{C}^1$ has a monotone dynamical system, $f(0)=0$ and $f'(0) \neq 1$. Consider the $\mathcal{C}^1$ perturbation $F(\lambda,x)$.
+Then there exists a neighborhood of $x = 0$ in which for small values of $\mathbf{\lambda}$, $F(\lambda,x)$ has a unique fixed point with the same stability as that of the fixed point $0$ of $f$.
+
+\end{proposicion}
+
+\begin{proof}
+
+We define the function \( G(\lambda, x) = F(\lambda, x) - x \). A fixed point of \( F(\lambda, x) \) is then a value \( x \) such that \( G(\lambda, x) = 0 \). Therefore, we want to find \( x = \psi(\lambda) \) such that:
+\[
+G(\lambda, \psi(\lambda)) = 0.
+\]
+Note that \( G(0, x) = F(0, x) - x = f(x) - x \). Since \( f(0) = 0 \), we have \( G(0, 0) = f(0) - 0 = 0 \). Then, \( (0, 0) \) is a point where \( G(\lambda, x) = 0 \).
+
+To apply the Implicit Function Theorem, we need the partial derivative of \( G \) with respect to \( x \) at the point \( (0, 0) \) to be nonzero. We compute this partial derivative:
+\[
+\frac{\partial G}{\partial x} (0, 0) = \frac{\partial}{\partial x} \left( F(0, x) - x \right)(0)  = f'(0) - 1.
+\]
+Since \( f'(0) \neq 1 \), we have \( \frac{\partial G}{\partial x} (0, 0) \neq 0 \). Therefore, the Implicit Function Theorem guarantees that there exists a $\mathcal{C}^1$ function, \( x = \psi(\lambda) \), defined for small values of \( \lambda \), such that \( G(\lambda, \psi(\lambda)) = 0 \). Then \( F(\lambda, \psi(\lambda)) = \psi(\lambda) \), that is, \( \psi(\lambda) \) is the desired fixed point of \( F \) when \( \lambda \) is small.
+
+To analyze the stability of \( \psi(\lambda) \) as a fixed point of \( F \), we observe the behavior of the derivative of \( F \) with respect to \( x \) at the point \( (\lambda, \psi(\lambda)) \):
+\[
+\frac{\partial F}{\partial x} (\lambda, \psi(\lambda)).
+\]
+Evaluating this expression at \( \lambda = 0 \), we obtain \( \frac{\partial F}{\partial x}(0, 0) = f'(0) = 1 \). Since the stability of a fixed point is determined by the derivative at that point, we conclude that in a neighborhood of $(0,\psi(0))$ the stability of the fixed point \( \psi(\lambda) \) of \( F(\lambda, x) \) is the same as the stability of the fixed point \( 0 \) of \( f(x) \), since both depend on \( f'(0) \).
+
+\end{proof}
+
+\begin{ejemplo}
+
+Consider the linear function $f(x) = 0.5x$ and its perturbation by a parameter $\lambda$, $F(\lambda,x) = \lambda + 0.5x$. For each value of the parameter $\lambda$ there exists a unique hyperbolic fixed point that has the same stability as that of the fixed point $0$ of $f$.
+
+\end{ejemplo}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig45.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $F(\lambda,x) = \lambda + 0.5x $ when $\lambda < 0$}
+        \label{fig:mi_imagen_9_2}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig46.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $F(\lambda,x) = \lambda + 0.5x $ when $\lambda > 0$}
+        \label{fig:mi_imagen_10_2}
+    \end{subfigure}
+    \caption{}
+    \label{fig:mi_imagen_total1.8_2}
+\end{figure}
+
+\section[Degenerate fixed points of a quadratic function]{Degenerate fixed points of a quadratic \\ function}
+
+Next, we study the fixed points of perturbations $F \in \mathcal{C}^2$ of a function $f \in \mathcal{C}^2$ such that $f'(x) > 0$ for all $x \in \mathbb{R}$, $f(0)=0$, $f'(0) =1$ and $f''(0) \neq 0$.
+We begin by defining
+$
+H(\lambda, x) := \frac{\partial (F(\lambda, x) - x)}{\partial x}
+$
+%
+Then: 
+\[
+H(0, 0) = 0 \quad \text{and} \quad \frac{\partial H}{\partial x}(0, 0) = f''(0) \neq 0.
+\]
+Since $f''(0)$ is nonzero in a neighborhood of $(0,0)$, $H(\lambda, x)$ will have an extreme point in said neighborhood; let us denote it $\psi(\lambda)$; let us prove the existence of said point.
+\newline
+The Implicit Function Theorem implies that there exist constants \( \delta > 0 \), \( \eta > 0 \), and a $\mathcal{C}^1$ function, \( \psi(\lambda) \), defined for \( \|\lambda\| < \delta \) such that \( \psi(0) = 0 \) and \( H(\lambda, \psi(\lambda)) = 0 \)
+and, moreover, every solution \( (\lambda, x) \) of $H(\lambda, \psi(\lambda)) = 0$ with \( \|\lambda\| < \delta \) and \( |x| < \eta \) is given by \( x = \psi(\lambda) \).
+
+\begin{proposicion}\label{Prop3}
+
+Considering a function $f$ and a perturbation $F$ under the above conditions and denoting $\alpha(\lambda) = F(\lambda,\psi(\lambda)) - \psi(\lambda)$, the following holds:
+
+\begin{enumerate} 
+
+\item If $\alpha(\lambda) \cdot f''(0) < 0 $ $\Rightarrow  F$ has two fixed points for small values of $\|\lambda\|$.
+
+\item If $\alpha(\lambda) \cdot f''(0) = 0 $ $\Rightarrow  F$ has one fixed point for small values of $\|\lambda\|$.
+
+\item If $\alpha(\lambda) \cdot f''(0) > 0 $ $\Rightarrow  F$ has no fixed points for small values of $\|\lambda\|$.
+
+\end{enumerate}
+\end{proposicion}
+
+\begin{proof}
+
+The study of the fixed points of $F(\lambda,x)$ is equivalent to the study of the zeros of the equation $F(\lambda,x) - x = 0$.
+
+We must take into account that $f''(0) \neq 0$, therefore we can assume that in a neighborhood of $0$ the second derivative of the function $F(\lambda,x)$ is nonzero; this implies that in said neighborhood the function $F(\lambda,x)$ has at most two zeros, since if it had more, the second derivative of $F(\lambda,x)$ would have some zero, which is proved by applying Rolle's theorem iteratively on $F(\lambda,x)$. On the other hand, we have shown that $F(\lambda,x)$ has an extreme point; making a Taylor expansion of $F(\lambda,x)$ in $x$ we can observe that said extreme point is determined by the sign of the coefficient of $x^2$, which when $\lambda = 0$, takes the value $f''(0)$; then in a neighborhood of $(0,x)$ the sign of $F(\lambda,x)$ does not change.  
+
+In summary, for each small value of $\lambda$ the function $x \to F(\lambda,x) - x$ has a minimum at $x = \psi(\lambda)$ when $f''(0) > 0$ or a maximum when $f''(0) < 0$.
+
+Now, the number of zeros that the function $F(\lambda,x) - x$ has is determined by the value of $\alpha(\lambda) = F(\lambda,\psi(\lambda)) - \psi(\lambda)$ and $f''(0)$.
+
+Since $(f(x)-x)''$ has the same sign in a neighborhood $(-\delta,\delta)$. Then for small values of $\lambda$ and $x \in (-\delta,\delta)$, $(F(\lambda,x) - x)''$ has the same sign as $(f(x)-x)''$. On the other hand, if $x$ and $\lambda$ are small, the second derivative is nonzero, then $F(\lambda,x) - x$ has at most two zeros. To see the exact number, it suffices to study the relationship between $\alpha(\lambda)$ and $f''(0)$.
+
+If $\alpha(\lambda)$ is a minimum ($f''(0) > 0$) and negative ($\alpha(\lambda) < 0$) or a maximum ($f''(0) < 0$) and positive ($\alpha(\lambda) > 0$), since it is a function with parabolic shape, the function will cross the $x$-axis at two points, that is, the function $F(\lambda,x) - x$ has two zeros; this is summarized by the condition $f''(0)\alpha(\lambda) < 0$. 
+
+Let us delve deeper into this case and study certain characteristics of these two zeros, which we will denote by $x^1_\lambda$ and $x^2_\lambda$.
+
+Sign: Let us see that both zeros have different signs; this is equivalent to saying that $x^1_\lambda x^2_\lambda < 0$.
+
+Since in a neighborhood of $\lambda$, $F(\lambda,x) -x$ behaves like a quadratic function with two zeros, the discriminant must be positive; therefore if $a(\lambda)$, $b(\lambda)$ and $c(\lambda)$ denote the coefficients associated with the quadratic function, we have that $b(\lambda) = 0$ in a neighborhood of $\lambda = 0$ since $\frac{\partial (F(\lambda, x) - x)}{\partial x} = 0$ with $\lambda$ and $x$ small. Therefore the discriminant is of the form $ - 4a(\lambda)c(\lambda) $, which is positive since the function has two roots; this implies that $x^1_\lambda x^2_\lambda = \frac{c(\lambda)}{a(\lambda)} < 0$. Therefore the zeros of $F(\lambda,x)-x$ have different signs for values of $\lambda$ close to $0$.
+
+Stability: Since for small values of $\lambda$ and $x$, $(F(\lambda,x) - x)''$ has the same sign as $(f(x)-x)''$ and does not change sign in a neighborhood of $0$; if $f''(0) > 0$ then $(F(\lambda,x) - x)'' > 0$ and assuming that both zeros are within the neighborhood of $0$ we can assume that $F''(\lambda,x^1_\lambda) > 1$ and $F''(\lambda,x^2_\lambda) > 1$, that is, both points are unstable; on the other hand, if $f''(0) < 0$ then $(F(\lambda,x) - x)'' < 0$ and therefore $F''(\lambda,x^1_\lambda) < 1$ and $F''(\lambda,x^2_\lambda) < 1$; assuming that $F''(\lambda,x^1_\lambda) > -1$ and $F''(\lambda,x^2_\lambda) > -1$ we conclude that both points are stable.
+
+If $\alpha(\lambda) = 0$ then the parabola has a zero of multiplicity $2$ and if the extreme point is a positive minimum or a negative maximum, that is, $f''(0)\alpha(\lambda) > 0$ then the function has no zeros.
+\newline
+Below we show the function $F(\lambda,x) - x$ as a function of the sign of $f''(0)\alpha(\lambda)$ and its position with respect to the $x$-axis as a function of the value of $\alpha(\lambda)$.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig47.png}  % Replace with your image name
+        \caption{Study of the zeros of $f$ when $f'''(0) > 0$ for different values of $\alpha(\lambda)$}
+        \label{fig:mi_imagen_9_3}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig48.png}  % Replace with your image name
+        \caption{Study of the zeros of $f$ when $f'''(0) < 0$ for different values of $\alpha(\lambda)$}
+        \label{fig:mi_imagen_10_3}
+    \end{subfigure}
+    \caption{}
+    \label{fig:mi_imagen_total1.8_3}
+\end{figure}
+
+
+
+\end{proof}
+
+\begin{ejemplo}
+
+Consider the quadratic function $f(x) = x + x^2$; since $f'(0) = 1> 0$ and $f \in \mathcal{C}^1$ there exists a neighborhood of $0$ in which the function has a monotone dynamical system; we consider the function perturbed by a parameter $\lambda$, $F(\lambda,x) = \lambda + x + x^2$. In this case we have $\alpha(\lambda) = \frac{\lambda}{2}$ and $f''(0) = 2$; consequently, if $\lambda < 0 $ $F$ has two fixed points, if $\lambda = 0$ $F$ has one fixed point, and if $\lambda > 0$ $F$ has no fixed points.
+    
+\end{ejemplo}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.25\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig42.png}  % Replace with your image name
+        \caption{The functions $F$ and $f(x)= x$ when $\lambda < 0$}
+        \label{fig:mi_imagen_11_1}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.25\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig43.png}  % Replace with your image name
+        \caption{The functions $F$ and $f(x)= x$ when $\lambda = 0$}
+        \label{fig:mi_imagen_12_1}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.25\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig44.png}  % Replace with your image name
+        \caption{The functions $F$ and $f(x)= x$ when $\lambda > 0$}
+        \label{fig:mi_imagen_13_1}
+    \end{subfigure}
+    \caption{General representation of the functions $F$ and $f(x) = x$ for different values of $\lambda$.}
+    \label{fig:mi_imagen_total1.3_1}
+\end{figure}
+
+
+\section{Period-doubling bifurcations}
+
+In the previous section we saw that when $f'(x) > 0$ we can characterize perturbations under certain conditions. In this chapter we will explore the stability of perturbations when $f'(x) < 0$ and how this affects the monotone character of the dynamical system of the function. 
+
+We begin by seeing what happens when $f'(x_0) < 0$ for a fixed point and how this conditions the dynamics of the function.
+
+\begin{lema}
+    
+Consider a function \( f \in \mathcal{C}^1 \) and a point $x_0$ such that \( f'(x_0) < 0 \), then the dynamical system of $f$ is not monotone at $x_0$.
+
+\end{lema}
+
+\begin{proof}
+ Let us denote $x_n = f^n(x_0)$; taking $x_1 = f(x_0)$ suppose that $x_0 < x_1$; by the mean value theorem we know that $x_{2} - x_1 = f(x_1) - f(x_{0}) = f'(\hat{x}) \cdot (x_{1} - x_{0}) < 0$ for some $\hat{x} \in (x_{1}, x_{0})$, that is, $x_0 < x_1$ but $x_{2} < x_1 $, therefore $f$ does not have an associated monotone dynamical system. 
+ The case $x_0 > x_1$ is resolved similarly.
+\end{proof}
+
+In summary, we can deduce that if there exists a function \( f \) such that \( f'(\hat{x}) < 0 \) at some point \( \hat{x} \), then the function \( f \) tends to carry points near \( \hat{x} \) to the other side of \( \hat{x} \), showing behavior that contradicts strict monotonicity.
+
+Since there is no relationship between $x_n$ and $x_{n+m}$, the orbits of functions with non-monotone dynamical systems are more complex; therefore we will focus on non-monotone orbits that satisfy certain characteristics. Suppose that the orbit of $x_0$ is bounded; being a bounded countably infinite set, there exists an accumulation point $\hat{x}$, and suppose that the even terms of the orbit converge to said point; therefore, the odd terms of the orbit converge to $f(\hat{x})$. This motivates the following definition:
+
+\begin{definicion}
+
+Given a point $x_0$ and a function $f$, we say that $x_0$ is a periodic point of minimum period $n \in \mathbb{N}$ if $n$ is the smallest integer such that $f^n(x_0) = x_0$. The set of all iterations of a periodic point is called a periodic orbit.
+
+\end{definicion}
+
+A periodic point (of $f$) $x_0$ of minimum period $n$ is a fixed point of the function $f^n$. Therefore, we can apply Theorem 1.1 to $f^n$ to study the stability of $x_0$.
+
+\begin{definicion}
+
+We say that a periodic point of minimum period $n$ is stable, unstable, or asymptotically stable when it is a stable, unstable, or asymptotically stable fixed point of $f^n$.
+    
+\end{definicion}
+
+Next, we focus on a particular case of $f'(x) < 0$, the hyperbolic case, that is, when $f'(x) = -1$.
+
+To simplify notation, we will denote any perturbation as follows: \( F(\lambda,x) = F_{\lambda}(x) \) and the composition of $f$ with itself will be: $ g = f \circ f $.
+
+We say that a function \( f(x) \) satisfies hypotheses \( H_1 \) when: 
+\begin{enumerate}
+    \item  \( f(0) = 0 \) and \( f'(0) = -1 \),
+    \item  \( g'''(0) \neq 0 \).
+\end{enumerate}
+
+And given a one-parameter perturbation \( F_{\lambda}(x) \) of \( f(x) \), we say it satisfies hypotheses \( H_2 \) when for all $\lambda \in \mathbb{R}$:
+\begin{enumerate}[start = 3]
+    \item  \( F_{\lambda}(0) = 0 \).
+    \item  \( \frac{dF_{\lambda}(0)}{dx} = -(1 + \lambda) \).
+\end{enumerate}
+
+
+\begin{teorema}
+Let \( f(x) \in \mathcal{C}^3 \) be a function with a fixed point at \( 0 \) that satisfies hypotheses \( H_1 \) and given a perturbation \( F_{\lambda}(x) \) of \( f(x) \) that satisfies hypotheses \( H_2 \). Then there exists a neighborhood of \( (\lambda,x) = (0,0) \) in which the existence of 2-periodic orbits is determined by \( g'''(0) \) and \( \lambda \) as follows:
+
+\begin{enumerate}
+    \item  For values of $\lambda$ such that \( \lambda g'''(0) < 0 \) there exists a unique periodic orbit \( \{\hat{x}_\lambda, F_{\lambda}(\hat{x}_\lambda) \} \) of minimum period 2 of the function \( F_{\lambda}(x) \). Moreover, the 2-periodic orbits are asymptotically stable (unstable) if \( 0 \) is an unstable (asymptotically stable) fixed point for that value of \( \lambda \).
+
+    \item When \( \lambda g'''(0) > 0 \), there are no periodic orbits of minimum period \( 2 \). 
+\end{enumerate}
+
+\end{teorema}
+
+\begin{proof}
+The points of period \( 2 \) of \( F_{\lambda}(x) \) correspond to the fixed points of \( F^2_{\lambda} = F_{\lambda} \circ F_{\lambda} \) (which we will denote by \( G_{\lambda}(x) \)), that is, to the zeros of the function \( G_{\lambda}(x) - x \).
+
+By condition 3 of \( H_2 \) we have \( F_{\lambda}(0) = 0 \) and \( G_{\lambda}(0) = F_{\lambda}(F_{\lambda}(0)) = 0 \), then \( 0 \) is a solution of \( G_{\lambda}(x) - x \).
+
+Since $0$ is a zero of $G_\lambda(x)-x$, but has minimum period $1$ as a fixed point of $F_\lambda$, we will discard that solution by considering the new function:
+\[
+T_{\lambda}(x) = \frac{1}{x} \cdot [ G_{\lambda}(x) - x ],
+\]
+which in a neighborhood of the origin only has as zeros points that are fixed points of minimum period \( 2 \). 
+
+We will analyze the zeros of this function. To do so, we begin by expanding the function in Taylor series:
+\[
+G'_{\lambda}(x) = F'_{\lambda}(F_{\lambda}(x)) F'_{\lambda}(x)
+\]
+\[
+G''_{\lambda}(x) = F''_{\lambda}(F_{\lambda}(x)) F'_{\lambda}(x)^2 + F'_{\lambda}(F_{\lambda}(x)) F''_{\lambda}(x)
+\]
+\[
+G'''_{\lambda}(x) = F'''_{\lambda}(F_{\lambda}(x)) F'_{\lambda}(x)^3 + 3 F''_{\lambda}(F_{\lambda}(x)) F'_{\lambda}(x) F''_{\lambda}(x) + F'_{\lambda}(F_{\lambda}(x)) F'''_{\lambda}(x)
+\]
+
+Therefore, the Taylor expansion of \( G_{\lambda}(x) \) near the origin is:
+\[
+G_{\lambda}(x) = (1 + \lambda)^2 x + \frac{a(\lambda)}{2} x^2 + \frac{b(\lambda)}{6} x^3 + \frac{G''''_{ \lambda}(\xi)}{24} x^4
+\]
+
+
+where \( a(\lambda) \) and \( b(\lambda) \) satisfy \( a(0) = 0 \) and \( b(0) = g'''(0) \). 
+
+In particular, at the origin we have:
+\[
+G'_0(0) = g'(0) = 1 \quad , \quad G''_0(0) = g''(0) = 0 \quad 
+\]
+Moreover $G'''_0(0)$ has the same sign as $ g'''(0) = b(0)$ when $\lambda$ takes small values; it suffices to apply Lemma~\ref{lemasigno} to the function $G'''_\lambda(x)$ for small values of $\lambda$.
+The Taylor expansion we have been seeking is:
+\[
+T_{\lambda}(x) = \lambda (2 + \lambda) + \frac{a(\lambda)}{2} x + \frac{b(\lambda)}{6} x^2 + \frac{T'''_{ \lambda}(\xi)}{24} x^3
+\]
+
+Since \( b(0) \neq 0 \), the study of the zeros of the function can be approached analogously to what was done in Proposition~\ref{Prop3}, considering that in this case we have \( \alpha(\lambda) = \lambda \) and \( T''_0(0) = g'''(0) \).  
+
+Consequently:
+\begin{itemize}
+    \item If \( \lambda g'''(0) > 0 \), the equation has no real solutions, that is, there are no zeros.
+    \item On the other hand, if \( \lambda g'''(0) < 0 \), the equation admits two real solutions corresponding to a single 2-periodic orbit of the form \( \{ \hat{x}_{\lambda}, F_{\lambda}(\hat{x}_{\lambda}) \} \).
+\end{itemize}
+
+To analyze the stability of this periodic orbit, one can reason analogously to the proof of the previous proposition. Recalling that the slope of \( G_{\lambda}(x) \) at \( 0 \) is \( (1 + \lambda)^2 \), two scenarios are obtained:
+
+\begin{itemize}
+    \item If \( (1 + \lambda)^2 < 1 \) (i.e., \( \lambda < 0 \)), then the fixed point \( 0 \) is stable. In this case, the slope of \( G_{\lambda}(x) - x \) at the points \( \hat{x}_{\lambda} \) and \( F_{\lambda}(\hat{x}_{\lambda}) \) is positive, which implies that both fixed points associated with the 2-periodic orbit are unstable.
+    \item On the other hand, if \( (1 + \lambda)^2 > 1 \) (i.e., \( \lambda > 0 \)), the fixed point \( 0 \) becomes unstable, and the period-2 orbit turns out to be stable.
+\end{itemize}
+
+
+
+    \begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig57.png}  % Replace with your image name
+        \caption{Representation of $T_{\lambda}(x)$ in the particular case $T_{\lambda}(x) = x^2 - 1$}
+        \label{fig:mi_imagen_9_4}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig58.png}  % Replace with your image name
+        \caption{Representation of $G_{\lambda}(x)$ in the particular case $G_{\lambda}(x) = x^3$ together with the function $f(x) = x$; the intersection points of $f$ with $G_{\lambda}(x)$ represent the fixed points of $G_{\lambda}(x)$}
+        \label{fig:mi_imagen_10_4}
+    \end{subfigure}
+    \caption{}
+    \label{fig:mi_imagen_total1.10}
+    \end{figure}
+
+\end{proof}
+
+\begin{ejemplo}\label{Ejemplo2.3.1}
+Consider the function $f(x) = -x -3x^2$ and let us study the 1-parameter perturbation given by $F(\lambda,x) = -(1 + \lambda)x - (3 + \lambda)x^2$.  
+Let us verify that the remaining conditions of the previous Theorem are satisfied: $f(0) = 0$, $f'(0) = -1$, $g'''(0) = -108 \neq 0$, $F(0,x) = -x -3x^2$, $F(\lambda,0) = 0$ and $\frac{dF(\lambda,0)}{dx} = -(1 + \lambda)$. Therefore, for each small value of $\lambda$ there exists a unique periodic orbit of minimum period $2$ that is asymptotically stable.
+
+\end{ejemplo}
+
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.25\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig11.png}  % Replace with your image name
+        \caption{Cobweb diagram for $F(\lambda,x) = -(1 + \lambda)x - (3 + \lambda)x^2$ with $\lambda < 0$}
+        \label{fig:mi_imagen_11}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.25\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig12.png}  % Replace with your image name
+        \caption{Cobweb diagram for $F(\lambda,x) = -(1 + \lambda)x - (3 + \lambda)x^2$ with $\lambda = 0$}
+        \label{fig:mi_imagen_12}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.25\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig13.png}  % Replace with your image name
+        \caption{Cobweb diagram for $F(\lambda,x) = -(1 + \lambda)x - (3 + \lambda)x^2$ with $\lambda > 0$}
+        \label{fig:mi_imagen_13}
+    \end{subfigure}
+    \caption{}
+    \label{fig:mi_imagen_total1.3}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig16.png}  % Replace with your image name
+        \caption{$\lambda < 0$}
+        \label{fig:mi_imagen_14}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig15.png}  
+        \caption{$\lambda = 0$}
+        \label{fig:mi_imagen_15}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig14.png}       
+        \caption{$\lambda > 0$}
+        \label{fig:mi_imagen_16}
+    \end{subfigure}
+    \caption{Same graphical representation as in the previous sequence but for $F^2$}
+    \label{fig:mi_imagen_total1.4}
+\end{figure}
+
+
+\newpage
+
+We add a couple of remarks about the previous theorem:
+
+\begin{enumerate}
+\item No generality is lost by assuming that in a neighborhood of $\lambda$ the fixed point of $F(\lambda,x)$ is $0$; if the fixed point were $x_0 \neq 0$ it would suffice to take $G(\lambda, x) = F(\lambda, x + x_0) - x_0$; it is immediate to verify that for $G(\lambda,x)$ the remaining hypotheses of the statement are satisfied.
+
+\item The Theorem can be used to establish period-doubling bifurcations for periodic points of any period, not only fixed points; it suffices to consider an appropriate iteration of the function. However, if the period is large, the computation of derivatives is quite complex.
+
+\end{enumerate}
+
+In summary, in these last two sections we began by studying the stability of scalar functions at their fixed points; said stability is strongly related to the value of the derivative at that point. Subsequently, we moved to the study of the stability of perturbations; being a very broad field, we divided it according to the monotone character of the dynamical system associated with the function, and in both subgroups we treated particular cases determined by conditions on the original function and the perturbation. 
+
+
+\chapter{A Gentle Introduction to Chaos}\label{chap:caos}
+
+\begin{quote}
+\centering
+"Chaos is merely order waiting to be deciphered". \textit{José Saramago}
+\end{quote}
+
+In this chapter we introduce the concept of chaos and some of its properties, and then study the presence of chaos in the logistic equation when $\lambda > 4$. We will also introduce some concepts such as symbolic dynamics and the shift function.
+
+\section{Basic concepts}
+
+In this section we introduce the concept of chaos and certain results that help us in its study.
+
+
+Recall that a subset $ U \subset W \subset \mathbb{R}$ with the usual topology is said to be dense in $ W $ if for all $\varepsilon > 0$ and for all $w \in W$ there exists a $u \in U$ such that $|u - v| < \varepsilon$.
+
+\medskip
+
+\begin{definicion}
+
+We say that the discrete dynamical system associated with a function $ f : [\alpha, \beta] \mapsto [\alpha, \beta]$ is chaotic if:
+
+\begin{enumerate}
+    \item The periodic points of $ f $ are dense in $ [\alpha, \beta] $.
+    \item $ f $ is transitive on $ [\alpha, \beta] $; that is, given any pair of subintervals $ U_1 $ and $ U_2 $ in $ [\alpha, \beta] $, there exists a point $ x_0 \in U_1 $ and an $ n > 0 $ such that $ f^n(x_0) \in U_2 $.
+    \item $ f $ has sensitive dependence on $  [\alpha, \beta] $; that is, there exists a sensitivity constant $ \tau $ such that, for any $ x_0 \in [\alpha, \beta] $ and any neighborhood of $ x_0 $, $ U $, there exists some $ y_0 \in U $ and $ n > 0 $ such that:
+    \[
+    |f^n(x_0) - f^n(y_0)| > \tau.
+    \]
+\end{enumerate}
+
+\end{definicion}
+
+Let us see that transitivity is equivalent to the existence of a dense orbit. 
+
+\begin{proposicion}\label{Prop3.1}
+The continuous function $f$ has a dense orbit if and only if it is transitive.
+\end{proposicion}
+
+\begin{proof}
+Let $U_1, U_2 \subset [\alpha,\beta]$; since there exists $x_0 \in [\alpha,\beta]$ for which
+\newline
+$\gamma(x_0) = \{x_0, f(x_0), f^2(x_0), \dots\} = \{x_0, x_1, x_2, \dots\}$
+is dense in $[\alpha,\beta]$, then there exist $n, m \in \mathbb{N}$ such that  
+\[
+x_n := f^n(x_0) \in U_1 \quad \text{and} \quad x_m := f^m(x_0) \in U_2.
+\]  
+Without loss of generality, assume that $n > m$.  
+Since $x_n = f^{n-m}(x_m)$, we have  
+\[
+f^{n-m}(x_m) \in U_1
+\]  
+Therefore, $f$ is transitive.
+
+On the other hand, if $f$ is transitive, consider the family of intervals 
+\newline
+$\{(q_1,q_2) \colon q_1,q_2 \in \mathbb{Q} \textbf{ and } \alpha \leq q_1 \leq q_2 \leq \beta \}$. The above family forms a countable base of neighborhoods of $[\alpha,\beta]$; let us denote them by $\{ Q_i\}_{i \in I}$, where $I$ is an index set that indexes the above family. Now consider the set $T_i \subset [\alpha,\beta]$ representing the subset of elements $x_i \in [\alpha,\beta]$ for which there exists an $n \in \mathbb{N}$ where $f^n(x_i) \in Q_i$. The sets $T_i$ are open and dense; let us see why:
+
+\begin{itemize}
+    \item Open: Given a point $t_i \in T_i$ let us see that there exists a neighborhood of $t_i$, $V_{t_i}$ such that $V_{t_i} \subset T_i$. Since $f$ is continuous, if $f^j(t_i) \in Q_i$ for some $j \in \mathbb{N}$ then by continuity of $f^j$ there exists an interval $S$ containing $f^j(t_i)$ such that $f^j(S) \subset Q_i$, therefore $S \subset T_i$. 
+
+
+    \item Dense: If there exists an $i \in \mathbb{N}$ such that $T_i$ is not dense, then there exists an open interval $S$ such that $S \cap T_i = \emptyset$, that is, all elements of $S$ do not pass through $Q_i$ under any iteration of $f$, that is, $f^j(S) \cap Q_i = \emptyset$; this means that $\forall x \in S \text{ and } \forall j \in \mathbb{N} \text{ it holds that } f^j(x) \notin Q_i$, which contradicts the transitivity of $f$
+\end{itemize}
+
+Obviously, by the transitivity of $f$ the sets $T_i$ are nonempty; therefore, thanks to the Baire category theorem~\cite{ref3} we have that the intersection $\cap_{i \in I}Q_i$ is nonempty; therefore there exists some element whose orbit passes through all the $Q_i$; since $Q_i$ is a base of neighborhoods, said orbit is dense.
+
+\end{proof}
+
+Now we proceed to study a classical example of a one-dimensional function with a chaotic discrete dynamical system, the dyadic transformation.
+
+\begin{ejemplo}
+ 
+We define the discontinuous function $ D: [0, 1] \to [0, 1] $ as $ D(x) = 2x \mod 1 $. That is,
+\[
+D(x) =
+\begin{cases}
+2x & \text{if } 0 \leq x < 1/2, \\
+2x - 1 & \text{if } 1/2 \leq x < 1.
+\end{cases}
+\]
+%
+Let us study the functions $D^n(x)$:
+\[
+D^2(x) = 
+\begin{cases} 
+4x & \text{if } 0 \leq x < \frac{1}{4}, \\
+4x - 1 & \text{if } \frac{1}{4} \leq x < \frac{1}{2}, \\
+4x - 2 & \text{if } \frac{1}{2} \leq x < \frac{3}{4}, \\
+4x - 3 & \text{if } \frac{3}{4} \leq x < 1.
+\end{cases}
+\]
+%
+In general, we have that, 
+\[
+D^n(x) = 2^n x - k, \quad \text{when} \quad x \in \left [\frac{k}{2^n},\frac{k+1}{2^n} \right )
+\]
+%
+where \( k \) is an integer varying between $0$ and $2^n - 1$.
+Let us prove this by induction:
+
+We know that \( D^{n+1}(x) = D(D^n(x)) \). We evaluate \( D(D^n(x)) \) considering the different intervals that depend on \( k \).
+\newline
+When  \( 0 \leq 2^n x - k < \frac{1}{2} \):
+In this case, by the definition of \( D(x) \), we have:
+\[
+D(D^n(x)) = D(2^n x - k) = 2(2^n x - k) = 2^{n+1} x - 2k.
+\]
+%
+When  \( \frac{1}{2} \leq 2^n x - k < 1 \):
+In this case, by the definition of \( D(x) \), we have:
+\[
+D(D^n(x)) = D(2^n x - k) = 2(2^n x - k) - 1 = 2^{n+1} x - 2k - 1.
+\]
+%
+Since $k$ is an integer varying between $0$ and $2^n-1$, taking $k'$ as $2k$ when \( 0 \leq 2^n x - k < \frac{1}{2} \) and as $2k+1$ when \( \frac{1}{2} \leq 2^n x - k < 1 \), we have that $k'$ is an integer varying between $0$ and $2^{n+1}-1$ and we can express \( D^{n+1}(x) \) in the form:
+\[
+D^{n+1}(x) = 2^{n+1} x - k' \quad \text{when} \quad x \in \left [\frac{k'}{2^{n+1}},\frac{k'+1}{2^{n+1}} \right )
+\]
+%
+We conclude $ D^n(x) = 2^n x \mod 1 $, so the graph of $ D^n $ consists of $ 2^n $ lines with slope $ 2^n $, each extending over the entire interval $[0,1]$.
+
+Let us see that the dynamical system associated with the function is chaotic on $[0,1]$.
+Let us begin by showing that the periodic points are dense. Note that $ D^n $ maps any interval of the form $[k/2^n, (k+1)/2^n]$ for $ k = 0, 1, \dots, 2^n - 2 $ to the interval $[0,1]$. Therefore, the image of $[k/2^n, (k+1)/2^n]$ under $ D^n $ crosses the diagonal $ y = x $ at some point in this interval, that is, $D^n$ has some fixed point, which implies that there is a periodic point in any subinterval. Since the lengths of these intervals are $ 1/2^n $, as $n \to \infty$, the distance between two periodic points tends to $0$; it follows that the periodic points are dense in $[0,1]$.
+
+Transitivity also follows, since given any open interval $ J \subset [0,1]$, we can always find an interval of the form $[k/2^n, (k+1)/2^n]$ within $ J $ for $ n $ sufficiently large. Therefore, $ D^n(J)  = [0,1]$. 
+
+To prove sensitivity we take a constant in the interval $ 0 < \tau < \frac{1}{2}$. Given an $x_0 \in [0,1]$,
+for any $n > 1$ there exists a $k \in \{0, 1 , \ldots 2^n - 1 \}$ such that $x_0 \in [k/2^n, (k+1)/2^n]$; therefore given any neighborhood $U$ of $x_0$ there exists an $n \in \mathbb{N}$ such that $[k/2^n, (k+1)/2^n] \subset U$; this implies that $ D^n(U)  = [0,1]$; it suffices to take as $y_0$ the element that maximizes the formula $\left| D^n(x) - x_0\right| $, that is, $y_0 = \arg\max_{x \in U} \left| D^n(x) - D^n(x_0)\right| $.
+
+Since $ D^n(U)  = [0,1]$ and given any point $x$ in the interval $[0,1]$ there always exists another point $y$ in $[0,1]$ satisfying $d(x,y) \geq \frac{1}{2}$, we have shown that $|D^{n}(y_0) - D^{n}(x_0)| \geq \frac{1}{2} > \tau$.
+
+
+\begin{definicion}
+    
+Suppose that $I$ and $J$ are intervals and $f: I \to I$ and $g: J \to J$. We say that $f$ and $g$ are conjugate if there exists a homeomorphism $h: I \to J$ such that $h$ satisfies the conjugation equation $h \circ f = g \circ h$.
+
+\end{definicion}
+
+A conjugation maps orbits of $f$ to orbits of $g$. This follows from the fact that $h(f^n(x)) = g^n(h(x))$ for all $x \in I$, so $h$ maps the $n$-th point in the orbit of $x$ under $f$ to the $n$-th point in the orbit of $h(x)$ under $g$. Similarly, $h^{-1}$ maps orbits of $g$ to orbits of $f$.
+
+
+\begin{ejemplo}
+    
+Consider the logistic equation $f_4: [0,1] \to [0,1]$ given by $f_4(x) = 4x(1-x)$ and the quadratic function $g: [-2,2] \to [-2,2]$ given by $g(x) = x^2 - 2$. Let $h(x) = -4x + 2$ and note that $h$ maps $[0,1]$ to $[-2,2]$. Moreover, we have $h(4x(1-x)) = (h(x))^2 - 2$, so $h$ satisfies the conjugation equation and $f_4$ and $g$ are conjugate.
+
+\end{ejemplo}
+
+From the point of view of chaotic systems, conjugations are important since they map one chaotic system to another.
+
+\begin{proposicion}\label{Prop5}
+Suppose that $f: I \to I$ and $g: J \to J$ are conjugate via $h$, where both $I$ and $J$ are closed intervals in $\mathbb{R}$ of finite length. If the discrete dynamical system of $f$ is chaotic on $I$, then that of $g$ is also chaotic on $J$.
+\end{proposicion}
+
+\begin{proof}
+We begin by showing that the periodic points of $g$ are dense in $J$:
+
+Since $h$ maps periodic points of $f$ to periodic points of $g$, that is, if $x \in I$ is a periodic point of $f$ then $h(x)$ is a periodic point of $g$, since:
+\[
+g^n(h(x)) = h(f^n(x)) = h(x)
+\]
+%
+Since the periodic points are dense in $f$, and $h$ is a homeomorphism that preserves the topological properties of $f$ on $I$, the periodic points of $g$ are dense in $J$.
+
+Next, we study the transitivity of $g$:
+If $U$ and $V$ are open subintervals of $J$, then $h^{-1}(U)$ and $h^{-1}(V)$ are open intervals in $I$. By transitivity of $f$, there exists $x_1 \in h^{-1}(U)$ such that $f^m(x_1) \in h^{-1}(V)$ for some $m$. But then $h(x_1) \in U$ and we have $g^m(h(x_1)) = h(f^m(x_1)) \in V$, so $g$ is also transitive.
+
+To prove sensitivity, suppose that $f$ has sensitivity constant $\tau$. Let $I = [\alpha_0, \alpha_1]$. We can assume that $\tau < \alpha_1 - \alpha_0$. For any $x \in [\alpha_0, \alpha_1 - \tau]$, consider the function $|h(x+\tau) - h(x)|$. This is a continuous function on $[\alpha_0, \alpha_1 - \tau]$ and positive.
+
+Therefore, there exists a minimum value \( \tau' > 0 \) such that
+\[
+|h(x+\tau) - h(x)| \geq \tau' \quad \forall \, x \in [\alpha_0, \alpha_1 - \tau].
+\]
+This implies that the function \( h \) transforms intervals of length \( \tau \) contained in \( [\alpha_0, \alpha_1] \) into intervals of length at least \( \tau' \) in the set \( J \). Consequently, \( \tau' \) acts as a sensitivity constant for the function \( g \). Let us see why:
+
+Let \( x \in J \) and \( U \subset J \) a neighborhood of \( x \). Since \( f \) has sensitive dependence on initial conditions, there exists a point \( y_0 \in h^{-1}(U) \subset I \) and an integer \( n > 0 \) such that
+\[
+\left| f^{n}(h^{-1}(x)) - f^{n}(y_0) \right| > \tau.
+\]
+That is, the interval \( (f^{n}(h^{-1}(x)), f^{n}(y_0)) \) has length greater than \( \tau \). Since \( h \) transforms intervals of length \( \tau \) into intervals of length at least \( \tau' \), we have
+\[
+(h \circ f^{n}(h^{-1}(x)), h \circ f^{n}(y_0)) = (g^{n}(x), g^{n}(h(y_0)))
+\]
+is an interval of length greater than \( \tau' \), which implies:
+\[
+|g^{n}(x) - g^{n}(h(y_0))| > \tau'.
+\]
+This shows that \( g \) also exhibits sensitivity to initial conditions, with sensitivity constant \( \tau' \).
+
+\end{proof}
+
+\end{ejemplo}
+
+\section{Symbolic dynamics}
+
+We now focus on one of the most useful tools for analyzing chaotic systems: symbolic dynamics.
+
+Consider a function $f : \mathbb{R}/\mathbb{Z} \mapsto \mathbb{R}/\mathbb{Z}$. Given a point $x_0 \in  \mathbb{R}/\mathbb{Z}$ consider its orbit $x_{n+1} = f(x_n)$. Let $I_0$ and $I_1$ be two disjoint intervals such that $\operatorname{img}(f) \subset I_0 \cup I_1 \subseteq \mathbb{R}/\mathbb{Z} \simeq [0,1]$.
+
+We define the function $\psi : \mathbb{R}/\mathbb{Z} \mapsto \{ 0,1\}^{\mathbb{N}}$ where the $n$-th coordinate of $\psi(x)$ takes the value $0$ when $x_n \in I_0$ and the value $1$ when $x_n \in I_1$.
+
+Let \(\Sigma\) be the set of all possible sequences of $0$s and $1$s. An element in the space \(\Sigma\) is an infinite sequence of the form \(s=(s_{0}s_{1}s_{2}...)\). To study \(\Sigma\), we need to study the distance between different points of \(\Sigma\). For this we need a distance. A distance function or metric on \(\Sigma\) is a function \(d(s,t) : \Sigma \mapsto \Sigma\) that satisfies:
+\begin{enumerate}
+    \item  \(d(s,t)\ge0\) and \(d(s,t)=0\) if and only if \(s=t\)
+    \item  \(d(s,t)=d(t,s)\)
+    \item  The triangle inequality: \(d(s,u)\le d(s,t)+d(t,u)\)
+\end{enumerate}
+%
+Since \(\Sigma\) is not a subset of a Euclidean space, we cannot use a Euclidean distance on \(\Sigma\). Therefore we must develop our own distance:
+\[
+d(s,t)=\sum_{i=0}^{\infty}\frac{|s_{i}-t_{i}|}{2^{i}}.
+\]
+%
+Where \(s=(s_{0}s_{1}s_{2}...)\) and \(t=(t_{0}t_{1}t_{2}...)\) are elements of \(\Sigma\). The numerators in this series are always 0 or 1, so this series converges. It suffices to compare it with the geometric series:
+\[
+d(s,t)\le\sum_{i=0}^{\infty}\frac{1}{2^{i}}=\frac{1}{1-\frac{1}{2}}=2.
+\]
+%
+It is straightforward to verify that this choice of \(d(s,t)\) satisfies the three requirements for being a distance function:
+\begin{itemize}
+    \item 1. Since $s \neq t$ there exists $i \in \mathbb{N}$ such that $s_i \neq t_i$, therefore $|s_i - t_1| \neq 0$; we conclude that $ 0 < |s_i - t_1| < \sum_{i=0}^{\infty}\frac{|s_{i}-t_{i}|}{2^{i}} = d(s,t)$. If $s = t$ then $s_i = t_i$ for all $i \in \mathbb{N}$ and therefore $d(s,t) = \sum_{i=0}^{\infty}\frac{|s_{i}-t_{i}|}{2^{i}} = 0$.
+    \item 2. Thanks to the fact that $|s_i - t_i| = |t_i - s_i|$ we have \[d(s,t) = \sum_{i=0}^{\infty}\frac{|s_{i}-t_{i}|}{2^{i}} = \sum_{i=0}^{\infty}\frac{|t_{i}-s_{i}|}{2^{i}} = d(t,s).\]
+    \item 3. It is a consequence of the triangle inequality of the absolute value; since $|s_i - u_i| \leq |s_i - t_i| + |t_i - u_i|$ for all  $i \in \mathbb{N}$ we have 
+    $d(s,u) = \sum_{i=0}^{\infty}\frac{|s_{i}-u_{i}|}{2^{i}} < \sum_{i=0}^{\infty}\frac{|s_{i}-t_{i}|}{2^{i}} + \sum_{i=0}^{\infty}\frac{|t_{i}-u_{i}|}{2^{i}} = d(s,t) + d(t,u)$
+    
+\end{itemize}
+
+Next, we present a property of the new distance defined.
+
+\begin{proposicion}
+    
+Suppose that \(s=(s_{0}s_{1}s_{2}...)\), \(t=(t_{0}t_{1}t_{2}...)\in\Sigma\).
+\begin{itemize}
+    \item 1. If \(s_{j}=t_{j}\) for \(j=0,...,n\), then \(d(s,t)\le1/2^{n}\)
+    \item2. Conversely, if \(d(s,t)<1/2^{n}\), then \(s_{j}=t_{j}\) for \(j=0,...,n\)
+\end{itemize}
+
+\end{proposicion}
+
+\begin{proof}
+
+If \(s_{j}=t_{j}\) for \(j=0,...,n\)
+\[
+d(s,t)=\sum_{i=0}^{n}\frac{|s_{i}-t_{i}|}{2^{i}}+\sum_{i=n+1}^{\infty}\frac{|s_{i}-t_{i}|}{2^{i}}
+\le0+\frac{1}{2^{n+1}}\sum_{i=0}^{\infty}\frac{1}{2^{i}} =\frac{1}{2^{n}}.
+\]
+%
+If, on the other hand, \(d(s,t)<1/2^{n}\), then it must be the case that \(s_{j}=t_{j}\) for any \(j\le n\), since otherwise \(d(s,t)\ge|s_{j}-t_{j}|/2^{j}=1/2^{j}\ge1/2^{n}\).
+
+\end{proof}
+
+
+Next, we present a function that will help us simplify the study of the chaotic behavior of a dynamical system associated with a function $f$.
+
+We construct \(\sigma:\Sigma\rightarrow\Sigma\) based on the following ideas:
+\begin{enumerate}
+    \item \(\sigma\) has an associated chaotic discrete dynamical system.
+    \item  \(\sigma\) is a discrete conjugation of \(f\) on \(\Lambda\); both concepts will be defined in upcoming sections. 
+    \item \(\sigma\) is completely understandable from the point of view of dynamical systems.
+\end{enumerate}
+
+In the following section we will detail these assertions.
+
+\begin{definicion}
+    
+We define the shift function \(\sigma:\Sigma\rightarrow\Sigma\) as:
+\[
+\sigma(s_{0}s_{1}s_{2}...)=(s_{1}s_{2}s_{3}...).
+\]
+%
+\end{definicion}
+
+That is, the shift function removes the first digit in each sequence of \(\Sigma\). Note that \(\sigma\) is a two-to-one function on \(\Sigma\), that is, the preimage of any element of \(\Sigma\) under \(\sigma\) consists of two elements. This follows because, if \((s_{0}s_{1}s_{2}...)\in\Sigma\), then we have
+\[
+\sigma(0s_{0}s_{1}s_{2}...)=\sigma(1s_{0}s_{1}s_{2}...)=(s_{0}s_{1}s_{2}...).
+\]
+%
+
+
+
+\begin{proposicion}
+
+The shift function 
+\(\sigma:\Sigma\rightarrow\Sigma\) is continuous.
+
+\end{proposicion}
+
+\begin{proof}
+
+Let \(s=(s_{0}s_{1}s_{2}...), t=(t_{0}t_{1}t_{2}...)\in\Sigma\) and let \(\epsilon>0\). Taking \(n\) such that \(1/2^{n}<\epsilon\), let \(\delta=1/2^{n+1}\). Suppose that \(d(s,t)<\delta\); then by the previous proposition we have \(s_{i}=t_{i}\) for \(i=0,...,n+1\). Therefore \(\sigma(t)=(s_{1}s_{2}...s_{n}t_{n+1}t_{n+2}...)\), so that \(d(\sigma(s),\sigma(t))\le1/2^{n}<\epsilon\). This proves that \(\sigma\) is continuous.
+
+\end{proof} 
+
+We can easily write all periodic points of any period for the shift function. In fact, the fixed points are \((\overline{0})\) and \((\overline{1})\). The $2$-cycles are \((\overline{01})\) and  \((\overline{10})\). In general, the periodic points of period \(n\) are given by repeated sequences consisting of repeated blocks of length \(n\): \((\overline{s_{0}...s_{n-1}})\).
+
+\begin{proposicion}
+
+The set of periodic points of $\sigma$ is dense in $\Sigma$.
+
+\end{proposicion}
+
+\begin{proof}
+
+The set of periodic points of $\sigma$ is $S = \bigcup_{n=0}^\infty \{ (\overline{s_0,s_1,....,s_n}) $ $\text{ such that } s_i = 0,1\}$; then for all $n \in \mathbb{N}$ and
+any point \(t=(t_{0}t_{1}t_{2}...) \in \Sigma\) it suffices to take $t_p = (\overline{t_0,t_1,....,t_n}) \in S$ and thanks to the previous proposition we have $|t - t_p|< \frac{1}{2^n}$; therefore $S$ is dense.
+    
+\end{proof}
+
+
+\section{The logistic equation}
+
+The logistic equation is a family of functions of the form:
+$
+f(\lambda, x) = \lambda x (1 - x), \quad \lambda > 1.
+$
+We can find a large number of phenomena in their dynamical systems. In this section we will briefly study some of their basic properties.
+
+We begin our study of the logistic equation by finding its fixed points: there are two fixed points, $0$ and $\hat{x}_\lambda = 1 - \frac{1}{\lambda}$. Since we assume that $\lambda > 1$, the latter fixed point always lies in the interval $(0, 1)$. For future reference, note that:
+$
+f'(\lambda, 0) = \lambda, \quad f'(\lambda, \hat{x}_\lambda) = 2 - \lambda, \quad f(\lambda, 0) = f(\lambda, 1) = 0.
+$
+
+We proceed to study the discretization of the logistic function $f(\lambda,x) = ax(1-x)$; applying Euler's method to $f$ and taking $b = ha$, we obtain the difference equation 
+$x_{n+1} = b x_n \left[\frac{(1 + b)}{b} - x_n \right]$. By means of the change of variables $x_n \mapsto \frac{(1 + b)}{b} x_n$ the equation becomes $
+x_{n+1} = (1 + b) x_n (1 - x_n)$. Moreover, if we take $(1 + b) = \lambda$, then the difference equation is equivalent to the logistic function with parameter $\lambda$.
+
+ In the following lemma we show the behavior of the logistic equation for certain values of $\lambda$ and $x_0$
+
+\begin{lema}
+Consider the logistic equation:
+
+(i) Suppose that $\lambda > 1$. If $x_0 < 0$ or $x_0 > 1$, then $f^n(\lambda, x_0) \to -\infty$ as $n \to +\infty$.
+
+(ii) Suppose that $1 < \lambda < 4$. If $x_0 \in (0, 1)$, then $f^n(\lambda, x_0) \in (0, 1)$ for any positive integer $n$.
+\end{lema}
+
+\begin{proof}
+
+(i) If $x_0 < 0$, then $f(\lambda, x_0) =  \lambda x_0 (1 - x_0) < x_0$, taking into account that $\lambda(1 - x_0) > 1 $ we deduce that $f^n(\lambda, x_0)$ is a decreasing sequence. This sequence cannot converge because $f$ has no negative fixed points. If $x_0 > 1$, then $f(\lambda, x_0) < 0$; therefore, the same argument applies. (ii) It suffices to note that $max_{\lambda \in (1,4), x\in (0,1)}{f(\lambda, x)} < 1$.
+\end{proof}
+
+Now we will study the dynamics of the logistic equation for various ranges of the parameter $\lambda$.
+
+\begin{itemize}
+
+  \item $1 < \lambda < 3$: It follows from Theorem 1.1 and from the equations $f'(\lambda, 0) = \lambda \; \text{and}
+  \newline
+  \; f'(\lambda, \hat{x}_\lambda) = 2 - \lambda$ that the zero fixed point is unstable and $\hat{x}_\lambda = 1 - \frac{1}{\lambda}$ is asymptotically stable.
+ 
+Let us study the asymptotic behavior of \( x_n \) for \( 0 < x_0 < 1 \), dividing the cases according to the values of \( \lambda \):
+
+\begin{itemize}
+    \item[a)]  \( 1 < \lambda < 2 \)  
+    In this range, \( f'(\lambda, \hat{x}_\lambda) = 2 - \lambda > 0 \), which implies that the function is monotone near the fixed point \( \hat{x}_\lambda \).  
+    \begin{itemize}
+        \item If \( 0 < x_0 \leq 0.5 \), by the Mean Value Theorem (MVT), it holds that \( |f(\lambda, x_0) - \hat{x}_\lambda| < |x_0 - \hat{x}_\lambda| \). Therefore, \( f^n(\lambda, x_0) \to \hat{x}_\lambda \) monotonically as \( n \to +\infty \).  
+        \item If \( 0.5 < x_0 < 1 \), the same argument applies considering that the first iteration \( f(\lambda, x_0) \) falls in the interval \( (0, 0.5) \).  
+    \end{itemize}
+     For any \( x_0 \in (0,1) \), \( \lim_{n \to +\infty} f^n(\lambda, x_0) = \hat{x}_\lambda \), which implies that \( \hat{x}_\lambda \) is a global attractor. After at most one iteration, solutions approach \( \hat{x}_\lambda \) monotonically.  
+
+    \begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig51.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = 1.8x(1-x)$ taking $x_0 < 0.5$}
+        \label{fig:mi_imagen_9_5}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig17.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = 1.8x(1-x)$ taking $x_0 > 0.5$}
+        \label{fig:mi_imagen_10_5}
+    \end{subfigure}
+    \caption{Study of fixed points of the logistic equation for $\lambda = 1.8$}
+    \label{fig:mi_imagen_total1.8_5}
+    \end{figure}
+
+    \item[b)] \( \lambda = 2 \):
+    Here, \( f'(2, x) = 2 - 4x \).  
+    \begin{itemize}
+        \item If \( x_0 \in (0, 0.5) \), then \( f'(2, x_0) > 0 \), and by the MVT, \( f^n(2, x_0) \to \hat{x}_\lambda \) monotonically as \( n \to +\infty \).  
+        \item If \( x_0 \in (0.5, 1) \), \( f'(2, x_0) < 0 \), which implies that the orbit does not converge monotonically to the fixed point \( \hat{x}_\lambda = 0.5 \). However, this fixed point is stable since \( |f'(2, 0.5)| < 1 \).  
+    \end{itemize}
+    
+    \begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig53.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = 2x(1-x)$ taking $x_0 < 0.5$}
+        \label{fig:mi_imagen_9_6}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig54.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = 2x(1-x)$ taking $x_0 > 0.5$}
+        \label{fig:mi_imagen_10_6}
+    \end{subfigure}
+    \caption{Study of fixed points of the logistic equation for $\lambda = 2$}
+    \label{fig:mi_imagen_total1.10_5}
+    \end{figure}
+    
+    \item[c)] \( 2 < \lambda < 3 \):
+    In this range, \( f'(\lambda, \hat{x}_\lambda) < 0 \), which means that the function is not monotone around the fixed point \( \hat{x}_\lambda \). However, \( \hat{x}_\lambda \) remains a global attractor on $(0,1)$. In this case, the orbit of \( f^n(\lambda, x_0) \) converges to \( \hat{x}_\lambda \), but in an oscillating manner rather than monotonically.  
+
+    \begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig55.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = 2.5x(1-x)$ taking $x_0 < 0.5$}
+        \label{fig:mi_imagen_9_9}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig56.png}  % Replace with your image name
+        \caption{Cobweb diagram for the function $f(x) = 2.5x(1-x)$ taking $x_0 > 0.5$}
+        \label{fig:mi_imagen_10_7}
+    \end{subfigure}
+    \caption{Study of fixed points of the logistic equation for $\lambda = 2.5$}
+    \label{fig:mi_imagen_total1.10_7}
+    \end{figure}
+    
+\end{itemize}
+
+\item $\lambda = 3$: The fixed point $0$ is unstable. The stability type of $\hat{x}_\lambda$ cannot be determined from Theorem~\ref{Teorema1.3.1} because $f'(\hat{x}_\lambda) = -1$; therefore we will compute the second derivative at $0$ and use Theorem~\ref{Teorema1.3.2}. Since $f'(x) = -2\lambda$ and we are assuming $\lambda = 3$, then $f'(\hat{x}_\lambda) = -6 < 0$; therefore we must compute $f'''(\hat{x}_\lambda) + \frac{3}{2}f''(\hat{x}_\lambda)^2 > 0$; we conclude that the fixed point $\hat{x}_\lambda$ is stable.
+
+\item $3 < \lambda < 1 + \sqrt6$. In this case the fixed point zero and $\hat{x}_\lambda$ are unstable; therefore, the iterations $f^n(\lambda,x_0) $ with $x_0 \in (0,1)$ cannot approach either of the fixed points. Nevertheless, these remain in the interval $(0,1)$. Since the sequence of iterations is bounded, a period-doubling bifurcation occurs at the fixed point $\hat{x}_\lambda$. The existence and asymptotic stability of said periodic orbit can be determined by analyzing the zeros of the function $f^2(\lambda,x) - x$. Indeed, taking into account that $x = 0$ and $x = \hat{x}_\lambda$ are roots of $f^2(\lambda,x) - x$, it can be shown that the periodic orbit of period 2 lies at the roots of the equation $\lambda^2 x^2 - \lambda(\lambda+1)x +\lambda + 1 = 0$. For $3 < \lambda < 1 + \sqrt6$, this period-2 orbit is asymptotically stable. It can be shown that it is a global attractor with the exception of a countable number of initial conditions that fall on the fixed point $\hat{x}_\lambda$ after a finite number of iterations.
+
+We can also study the period-doubling bifurcation using Theorem 1.2. To apply this theorem to the logistic equation, we need to translate the fixed point $\hat{x}_\lambda$ to the origin and also translate the bifurcation value $\lambda = 3$ to zero. To do this, we introduce the new variable $y$ and the parameter $\mu$, defined by
+$
+x = 1 - \frac{1}{\lambda} + y,
+$
+and
+$
+\lambda = 3 + \mu.
+$
+Then, the logistic equation becomes
+$
+f(\mu, y) = -\left(1 + \mu\right)y - \left(3 + \mu\right)y^2.
+$
+This function has already been studied in Example~\ref{Ejemplo2.3.1}.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig18.png}  % Replace with your image name
+        \caption{$\lambda = 2.8$}
+        \label{fig:mi_imagen_18}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig19.png}  % Replace with your image name
+        \caption{$\lambda = 3$}
+        \label{fig:mi_imagen_19}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig20.png}  % Replace with your image name
+        \caption{$\lambda = 3.2$}
+        \label{fig:mi_imagen_20}
+    \end{subfigure}
+    \caption{Study of fixed points of the logistic equation for $\lambda = 2.8$, $\lambda = 3$, $\lambda = 3.2$}
+    \label{fig:mi_imagen_total15}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig21.png}  % Replace with your image name
+        \caption{$\lambda = 2.8$}
+        \label{fig:mi_imagen_21}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig22.png}  % Replace with your image name
+        \caption{$\lambda = 3$}
+        \label{fig:mi_imagen_22}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig23.png}  % Replace with your image name
+        \caption{$\lambda = 3.2$}
+        \label{fig:mi_imagen_23}
+    \end{subfigure}
+    \caption{Study of fixed points of the second iteration of the logistic equation for $\lambda = 2.8$, $\lambda = 3$, $\lambda = 3.2$}
+    \label{fig:mi_imagen_total_2}
+\end{figure}
+
+
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig24.png}  % Replace with your image name
+        \label{fig:mi_imagen_24_1}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig25.png}  % Replace with your image name
+
+        \label{fig:mi_imagen_25}
+    \end{subfigure}
+
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig26.png}  % Replace with your image name
+        \label{fig:mi_imagen_26}
+    \end{subfigure}
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.45\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig27.png}  % Replace with your image name
+        \label{fig:mi_imagen_27}
+    \end{subfigure}
+    \caption{Representation of asymptotically stable periodic orbits of periods $2$, $4$, $8$, $16$ where the logistic equation takes values $\lambda = 3.2$, $\lambda = 3.52$, $\lambda = 3.55$, $\lambda = 3.567$; the first $100$ iterations have been removed}    
+    \label{fig:mi_imagen_total16}
+\end{figure}
+
+\end{itemize}
+
+As the value of $\lambda$ increases, it becomes more complex to study the dynamics of the logistic function qualitatively; therefore we proceed to numerically compute the behavior for some values of the parameter $\lambda$.
+
+\begin{itemize}
+
+\item $3.449 < \lambda < 3.570$ These values of $\lambda$ give rise to the appearance of very complex dynamics. For example, when $\lambda = 3.449$ the $2$-periodic orbit gives rise to a stable and asymptotic orbit of period $4$. In fact, there is an increasing sequence of parameters $A_1 < \lambda_2 < \lambda_3 < ....$ at which the logistic equation repeatedly undergoes a period-doubling bifurcation: As $\lambda_k$ increases, the asymptotically stable periodic orbit of period $2^k$ becomes unstable and a stable periodic orbit with double the period bifurcates from the orbit of the lower period. The first bifurcation values are:
+
+$
+\lambda_1 = 3, \quad \lambda_2 = 3.449, \quad \lambda_3 = 3.544, \quad \lambda_4 = 3.564, \quad \text{.\ .\ .\ .}
+$
+
+The sequence converges to a number $\lambda_\infty$ as $k \to \infty$ and $\lambda_\infty$ is $3.5699456$. Moreover, the ratio of the distances between parameter values of successive period-doubling bifurcations tends to a constant:
+
+$
+\lim_{k \to +\infty} \frac{\lambda_{k+1} - \lambda_k}{\lambda_k - \lambda_{k-1}} = 4.6692 \ldots
+$
+
+Due to the geometric nature of this sequence, beyond a certain number of parameters it is not easy to determine the bifurcation values. However, thanks to the above constant this problem becomes trivial.
+
+\item $\lambda > 3.570$ For these values of the parameter the dynamics of the logistic equation becomes quite complicated. For some values of $\lambda$ the iterations move erratically, a behavior called "chaos". Finally, we will study a particularly interesting special case:
+
+\item $\lambda = 3.839$ There is a unique asymptotically stable periodic orbit of period $3$. Computationally we can obtain this orbit by iterating any initial value sufficiently long.
+
+$
+\hat{x}_\lambda = 0.149888,f^2(\hat{x}_\lambda) = 0.959299,
+$
+
+$
+f(\hat{x}_\lambda) = 0.489172, f^3(\hat{x}_\lambda) = 0.149888.
+$
+
+Nevertheless, we can see beyond what the computer shows us about the dynamics of the logistic equation at $\lambda = 3.839$ through Sharkovskii's theorem. To state the theorem, let us order the integers in the following way, called Sharkovskii's ordering:
+
+$
+3  \vartriangleright  5  \vartriangleright  7 \vartriangleright  \cdots  \vartriangleright  2 \cdot  3  \vartriangleright  2 \cdot  5 \ \vartriangleright  2 \cdot 7  \vartriangleright  \cdots 
+2^2 \cdot  3  \vartriangleright  2^2 \cdot  5  \vartriangleright  2^2 \cdot  7  \vartriangleright  \ \cdots \\
+$
+
+$ 
+\vartriangleright \ 2^3 \cdot \ 3 \ \vartriangleright \ 2^3 \cdot \ 5 \ \vartriangleright \ 2^3 \cdot \ 7 \ \vartriangleright \ \cdots \\
+\vartriangleright \ 2^3   \vartriangleright \ 2^2 \vartriangleright \ 2 \vartriangleright \ 1
+$
+
+In other words: Write all odd numbers except 1, then $2$ times all odd numbers, then $2^2$ times the odd numbers, etc. Finally, write the powers of $2$ in decreasing order with $1$ at the end. This list contains all natural numbers.
+
+\begin{teorema}[Sharkovskii's Theorem (see \cite{ref2})]
+
+Let \( f: \mathbb{R} \to \mathbb{R} \) be a continuous function. Suppose that \( f \) has a periodic point of minimum period \( m \). If \( m \vartriangleright n \) in Sharkovskii's ordering, then \( f \) also has a periodic point of minimum period \( n \).
+    
+\end{teorema}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig28.png}
+    \caption{We can observe the presence of chaos in the orbit of the logistic equation when $\lambda = 3.891$}
+    \label{fig:mi_imagen28}
+\end{figure}
+
+An important consequence of this theorem is that if $f$ has a periodic point of minimum period $3$ then it has periodic points of every minimum period. In particular, the logistic equation at $\lambda = 3.839$, in addition to having a 3-periodic orbit, has periodic orbits of all minimum periods.
+
+\item $ 3.839 < \lambda < 4$. As $\lambda$ increases, the 3-periodic orbit undergoes a period-doubling bifurcation and loses its stability in favor of an asymptotically stable 6-periodic orbit. If $\lambda$ continues to increase, there is a sequence of period-doubling bifurcations. Remarkably, the ratio of the distances between period-doubling bifurcations again approaches the constant $4.6692$.
+
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig29.png}  % Replace with your image name
+        \label{fig:mi_imagen_29}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig30.png}  % Replace with your image name
+        \label{fig:mi_imagen_30}
+    \end{subfigure}%
+    \hfill  % Horizontal space between subfigures
+    \begin{subfigure}{0.3\textwidth}  % Adjust size as needed
+        \centering
+        \includegraphics[width=\textwidth]{fig31.png}  % Replace with your image name
+        \label{fig:mi_imagen_31}
+    \end{subfigure}
+    \caption{Representation of asymptotically stable periodic orbits of periods $3$, $6$, $12$, where the logistic equation takes values $\lambda = 3.839$, $\lambda = 3.845$, $\lambda = 3.849$. The first $100$ iterations have been removed.}
+    \label{fig:mi_imagen_total_3}
+\end{figure}
+
+\end{itemize}
+
+We now proceed to study the logistic equation \(f_{\lambda}(x)=\lambda x(1-x)\) when \(\lambda>4\). For these values, the dynamics of the function begins to exhibit chaos.
+
+The graphical representation seems to imply that almost all orbits tend to $-\infty$. See Figure~\ref{fig:mi_imagen41}. However, this is not the case, since this function has fixed and periodic points. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig41.png}
+    \caption{We can observe the presence of chaos in the orbit of the logistic equation when $\lambda> 4$}
+    \label{fig:mi_imagen41}
+\end{figure}
+
+Unlike the case \(\lambda < 4\), the interval \(I=[0,1]\) is no longer invariant when \(\lambda>4\). Certain orbits escape from \(I\) and then tend to $-\infty$. In this section we will study the behavior of orbits that do not leave \(I\). 
+
+
+\begin{proposicion}
+
+Let \(\Lambda\) be the set of points in \(I\) with orbits that never leave \(I\); then, $\Lambda$ is of the form: 
+\[
+\Lambda=I-\bigcup_{n=0}^{\infty}A_{n}.
+\]
+%
+Where $A_0  = \{ x \in \mathbb{R} \text{ such that } f_{\lambda}(x)>1 \}$ and the $A_n$ are defined recursively:
+$
+A_n = f_{\lambda}^{-1}(A_{n-1}) \cap I \text{  for  } n \in \mathbb{N}
+$
+\end{proposicion}
+
+\begin{proof}
+
+For any \(x\in A_0\) we have \(f_{\lambda}^{2}(x) = f_{\lambda}(f_{\lambda}(x))<0\) and, as a consequence, the orbits of all points in \(A_0\) tend to \(-\infty\). Note that any orbit that leaves \(I\) must pass through \(A_0\) before diverging to \(-\infty\).
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{fig49.png}
+    \caption{Graphical representation of $f_{\lambda}(x)$, $f_{\lambda}^{2}(x)$ and $f_{\lambda}^{3}(x)$}
+    \label{fig:mi_imagen41_1}
+\end{figure}
+
+On the other hand, \(A_1\) consists of two open intervals in \(I\), one on each side of \(A_0\). Since for every \(x \in A_1\) we have \(f_{\lambda}(x) \in A_0\), the orbits of \(A_1\) also tend to \(-\infty\). Again, the endpoints of \(A_1\) eventually become fixed points. 
+
+\(A_{2}\) consists of four intervals, since each of the two open intervals in \(A_1\) has as preimage a pair of disjoint intervals; in these four open intervals the first iteration of \(f_{\lambda}(x)\) on their points is in \(A_1\) and the second in \(A_0\), and therefore, all these points have orbits that tend to \(-\infty\). 
+
+In general, let \(A_{n}\) be the set of points in \(I\) where the \(n\)-th iteration lies in \(A_0\). \(A_{n}\) consists of \(2^{n}\) disjoint open intervals in \(I\). Any point whose orbit does not leave \(I\) must be in one of the \(A_{n}\).
+
+\end{proof}
+
+Next, we will apply symbolic dynamics to the logistic equation \(f_{\lambda}\) when $\lambda > 4$. Let us define the itinerary function on \(f_{\lambda}\):
+
+In this case we will take as intervals \(I_{0}\) and \(I_{1}\) the left and right closed intervals, respectively, of \(I-A_0\). 
+
+Given \(x_{0}\in\Lambda\), the entire orbit of \(x_{0}\) lies in \(I_{0}\cup I_{1}\). Therefore, we define the itinerary function as the one that will associate an infinite sequence \(S(x_{0})=(s_{0}s_{1}s_{2}...)\) of 0s and 1s to the point \(x_{0}\) through the rule
+\[
+s_{j}=k \text{ if and only if } f_{\lambda}^{j}(x_{0})\in I_{k}.
+\]
+%
+That is, we simply observe how \(f_{\lambda}^{j}(x_{0})\) oscillates between \(I_{0}\) and \(I_{1}\), assigning a 0 or a 1 at the \(j\)-th stage depending on the interval in which \(f_{\lambda}^{j}(x_{0})\) lies.
+
+\begin{ejemplo}
+    
+The fixed point 0 has itinerary \(S(0)=(000...)\). The fixed point \(x_{\lambda}\) in \(I_{1}\) has itinerary \(S(x_{\lambda})=(111...)\). The point \(x_{0}=1\) eventually becomes fixed and has itinerary \(S(1)=(1000...)\). A 2-cycle that jumps between \(I_{0}\) and \(I_{1}\) has itinerary \((\overline{01}...)\) or \((\overline{10}...)\), where \(\overline{01}\) represents an infinite sequence where the pattern $01$ is repeated.
+
+\end{ejemplo}
+
+\begin{teorema}
+
+When $\lambda > 4$ the itinerary function of $f_{\lambda}$, $S : \Lambda \mapsto \Sigma$ is a homeomorphism.
+
+\end{teorema}
+
+
+The proof of this theorem is beyond the objectives of this work. The proof can be found on p. 348 of \cite{ref1}.
+
+Next, we proceed to study the periodic points of $f_{\lambda}$ through the shift function $\sigma$ and with the help of the itinerary function $S$.
+
+Recall that one of the conditions for being able to use the shift function to study the dynamics of a function is that it be conjugate to said function. In the following theorem we show the existence of a conjugation between both functions: 
+
+\begin{teorema}\label{Te3.3.3}
+
+The function \(S:\Lambda\rightarrow\Sigma\) provides a conjugation between \(f_{\lambda}\) and the shift function \(\sigma\).
+
+\end{teorema}
+
+
+\begin{proof}
+
+In the previous theorem we showed that \(S\) is a homeomorphism. Therefore, it suffices to show that \(S\circ f_{\lambda}=\sigma\circ S\). Let \(x_{0}\in\Lambda\); suppose that \(S(x_{0})=(s_{0}s_{1}s_{2}...)\). Then we have \(x_{0}\in I_{s_{0}}, f_{\lambda}(x_{0})\in I_{s_{1}}, f_{\lambda}^{2}(x_{0})\in I_{s_{2}}\), and so on. This implies that \(S(f_{\lambda}(x_{0}))=(s_{1}s_{2}s_{3}...)\), so \(S(f_{\lambda}(x_{0}))=\sigma(S(x_{0}))\), which is what we wanted to prove.
+
+\end{proof}
+
+Now, not only can we write all periodic points of \(\sigma\), but we can explicitly write a point in \(\Sigma\) that has a dense orbit. For example:
+\[
+s^{*}=(0100011011000001...)
+\]
+%
+The sequence \(s^{*}\) is constructed by successively enumerating all possible blocks of 0s and 1s of length 1, length 2, length 3, and so on. Clearly, some iteration of \(\sigma\) applied to \(s^{*}\) produces a sequence that coincides with any given sequence in an arbitrarily large number of initial places. That is, given \(t=(t_{0}t_{1}t_{2}...)\in\Sigma\), we can find \(k\) such that the sequence \(\sigma^{k}(s^{*})\) begins as:
+\[
+(t_{0}...t_{n}s_{n+1}s_{n+2}...)
+\]
+%
+and therefore
+\[
+d(\sigma^{k}(s^{*}),t)\le1/2^{n}
+\]
+%
+Therefore, the orbit of \(s^{*}\) gets arbitrarily close to every point in \(\Sigma\). This proves that the orbit of \(s^{*}\) under \(\sigma\) is dense in \(\Sigma\) and by Proposition~\ref{Prop3.1} \(\sigma\) is transitive.
+ 
+We can construct more points with dense orbits in \(\Sigma\); it suffices to rearrange the blocks in the sequence \(s^{*}\). This is what we referred to earlier when we said that the dynamics of \(\sigma\) is completely understandable.
+
+The shift function also has sensitive dependence. In fact, we can take as sensitivity constant $1$. Since if \(s=(s_{0}s_{1}s_{2}...)\in\Sigma\), for any $x \in U \subset \Sigma$ it suffices to consider the smallest integer $n$ such that $\max_{t \in U} d(s,t) > \frac{1}{2^n}$; we consider the point $s^{\prime} =(s_{0}s_{1}...s_{n}\hat{s}_{n+1}\hat{s}_{n+2}...)$ where
+\(\hat{s}_{j}\) denotes "not \(s_{j}\)" (i.e., if \(s_{j}=0\), then \(\hat{s}_{j}=1\), or if \(s_{j}=1\), then \(\hat{s}_{j}=0\)); the point \(s^{\prime}\) satisfies 
+\(d(s,s^{\prime})=1/2^{n}\) and therefore $s^{\prime} \in U$; since \(d(\sigma^{n+1}(s),\sigma^{n+1}(s^{\prime}))=  \sum_{i=0}^{\infty}\frac{|s_{n+1+i}-\hat{s}_{n+1+i}|}{2^i} = \sum_{i=0}^{\infty}\frac{1}{2^i} = 2\)
+
+We have proved that the discrete dynamical system associated with the function $\sigma$ is chaotic.
+
+Thanks to Proposition~\ref{Prop5} and Theorem~\ref{Te3.3.3} we have proved the following theorem:
+
+\begin{teorema}
+The discrete dynamical system associated with the function $f_{\lambda}$ is chaotic on $\Lambda$ when $\lambda > 4$.
+\end{teorema}
+
+Therefore, symbolic dynamics provides us with a computable model for the dynamics of $f_{\lambda}$ on the set $\Lambda$, despite the fact that the discrete dynamical system associated with the function $f_{\lambda}$ on $\Lambda$.
+
+
+
+
+
+
+
+
+\begin{thebibliography}{99}
+    \bibitem{ref1} Morris W. Hirsch, Stephen Smale, Robert L. Devaney, {\em Differential Equations, Dynamical Systems, and an Introduction to Chaos}, Elsevier, 2003.
+    \bibitem{ref2} Jack K. Hale, Hüseyin Koçak, {\em Dynamics and Bifurcations,}  Springer, 1991
+    \bibitem{ref3} Erwin Kreyszig, {\em Introductory Functional Analysis with Applications,} John Wiley and Sons, 1978
+    \bibitem{ref4} Han Peters, RTNS24 conference, 2024
+    \bibitem{ref5} David Kincaid, Ward Cheney,{\em Numerical Analisys, Mathematics of Numerical Computing}, American Mathematical Society, 1990
+\end{thebibliography}
+
+\end{document}
