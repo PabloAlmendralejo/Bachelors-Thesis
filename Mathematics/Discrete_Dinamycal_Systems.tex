@@ -23,6 +23,8 @@
 \newtheorem{proposicion}{Proposición}[section]
 \newtheorem{teorema}{Teorema}[section]
 \newtheorem{lema}{Lema}[section]
+\newtheorem{corolario}{Corolario}[section]
+\newtheorem{conjetura}{Conjetura}[section]
 \theoremstyle{definition}
 \newtheorem{ejemplo}{Ejemplo}[section]
 \newtheorem{definicion}{Definición}[section]
@@ -60,34 +62,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \thispagestyle{empty}
-\vspace*{-1cm}
-\noindent José Luis Bravo Trinidad, profesor del
-Departamento de Matemáticas de la Universidad de Extremadura, 
-
-\vspace{0.5cm}	
-\noindent INFORMA:
-\vspace{0.5cm}
-
-\noindent Que D. Pablo Borrego Ramos ha realizado bajo su direcci\'on el Trabajo Fin de Grado y considera que la memoria re\'une los requisitos necesarios para su evaluaci\'on.
-
-\vspace{2cm}
-\hfill Badajoz, 6 de junio de 2025. 
-\vspace{4cm}
-%\vfill*
-
-% Firma de los tutores
-\hspace*{-2cm}
-\begin{minipage}[t]{0.7\textwidth}
-\noindent \emph{Fdo. José Luis Bravo Trinidad}\\
-\end{minipage}
-%%
-\hspace*{1cm}
-
-\newpage
-
-\thispagestyle{empty}
-\textcolor[rgb]{1.00,1.00,1.00}{.} 
-\newpage
 
 
 \tableofcontents
@@ -102,6 +76,8 @@ El trabajo profundiza en el análisis de la estabilidad de los puntos fijos y la
 
 Otro tema central es la introducción al caos, donde se analizan conceptos como la dinámica simbólica y la ecuación logística, que ilustran cómo los sistemas aparentemente simples pueden exhibir comportamientos complejos y caóticos.
 
+Por último, estas herramientas se aplican a una aplicación cúbica que describe el descenso del gradiente con pasos grandes. Se demuestra que el umbral del caos de Li--Yorke es exactamente el parámetro de la bifurcación silla-nodo que crea la primera órbita de periodo tres, y que este parámetro es un número algebraico explícito, la menor raíz en $[1,2]$ de un polinomio de grado $8$ con coeficientes enteros. La prueba es exacta, basada en el discriminante de un polinomio y el teorema de Sturm, y con este resultado se refuta una conjetura de Chen et al.\ (TMLR, 2024).
+
 En conjunto, este trabajo proporciona un marco teórico sólido para entender y analizar sistemas dinámicos discretos.
 
 \section*{Abstract}
@@ -112,6 +88,8 @@ This work focuses on the analysis of one-dimensional discrete dynamics, addressi
 The work explores the analysis of the stability of fixed points and orbits through graphical and analytical methods, such as the Cobweb diagram and Taylor series expansions. Additionally, bifurcations are investigated, with an emphasis on the qualitative changes that dynamical systems undergo under small perturbations. These tools are essential for classifying fixed points and studying their stability and instability properties.
 
 Another central theme is the introduction to chaos, where concepts like symbolic dynamics and logistic function are analyzed, which illustrate how seemingly simple systems can exhibit complex and chaotic behaviors.
+Finally, these tools are applied to a cubic map that describes gradient descent with large step sizes. We prove that the threshold for Li--Yorke chaos is exactly the parameter of the saddle-node bifurcation that creates the first period-three orbit, and that this parameter is an explicit algebraic number, the smallest root in $[1,2]$ of a polynomial of degree $8$ with integer coefficients. The proof is exact, based on the discriminant of a polynomial and Sturm's theorem, and we use this result to disprove a conjecture of Chen et al.\ (TMLR, 2024).
+
 Summarizing, this work provides a solid theoretical framework to understand and analyze discrete dynamical systems.
 
 \chapter*{Introducción}
@@ -131,13 +109,15 @@ Criptografía: Los principios de la dinámica caótica en sistemas discretos han
 
 El atractivo de los sistemas discretos radica también en su capacidad de generar fenómenos complejos como bifurcaciones, caos y comportamientos periódicos o cuasi-periódicos.
 
-Este trabajo está diseñado para explorar, comprender y aplicar los fundamentos de la dinámica discreta unidimensional. A lo largo de tres capítulos, se abordarán desde los conceptos básicos hasta aspectos más avanzados.
+Este trabajo está diseñado para explorar, comprender y aplicar los fundamentos de la dinámica discreta unidimensional. A lo largo de cuatro capítulos, se abordarán desde los conceptos básicos hasta aspectos más avanzados.
 
 En el Capítulo~\ref{chap:dinamica_discreta}, se explora esta relación, mostrando cómo los métodos numéricos, como el método de Euler o el de Newton, permiten resolver ecuaciones diferenciales mediante discretización. Estas técnicas no solo nos permiten aproximar soluciones para ecuaciones diferenciales que carecen de soluciones analíticas exactas, sino que también establecen un vínculo natural con los sistemas dinámicos discretos. Partiendo de un problema de valor inicial, se muestra cómo las ecuaciones en diferencias emergen como herramientas fundamentales para estudiar la evolución de sistemas en puntos discretos, sentando así las bases para un análisis más amplio y profundo de la dinámica discreta.
 
 En el Capítulo~\ref{chap:bifurcaciones}, se estudian transiciones cualitativas en los sistemas dinámicos cuando se modifican los parámetros del sistema. Se exploran puntos fijos y su estabilidad, bifurcaciones de doble período y otros fenómenos críticos. Estos conceptos permiten modelar cambios en sistemas reales, como el colapso de una población o la transición a comportamientos caóticos en sistemas biológicos y económicos.
 
 En el Capítulo~\ref{chap:caos} se presenta el fenómeno del caos, caracterizado por una sensibilidad a las condiciones iniciales y una dinámica aparentemente impredecible. Se estudia la dinámica simbólica y se analiza la ecuación logística como caso paradigmático. Se demuestra cómo sistemas simples pueden generar resultados de alta complejidad.
+
+En el Capítulo~\ref{chap:gd} se aplican las herramientas anteriores a un problema de aprendizaje automático. El descenso del gradiente con un paso grande en una familia de problemas de regresión cuadrática se reduce a la iteración de una aplicación cúbica $f_a$, cuyo parámetro es proporcional al tamaño del paso. Se determina exactamente el umbral a partir del cual esta aplicación es caótica en el sentido de Li y Yorke: es el parámetro en el que nace una órbita de periodo tres mediante una bifurcación silla-nodo, y se puede escribir como raíz de un polinomio explícito de grado $8$. La prueba combina el teorema de Sharkovskii, el teorema de Li--Yorke y un cálculo exacto con el discriminante de un polinomio y el teorema de Sturm, y muestra que una conjetura de Chen et al.\ sobre este umbral es falsa.
 
 El objetivo de este trabajo es proporcionar una comprensión profunda de la dinámica discreta unidimensional, desde sus fundamentos hasta sus aplicaciones. A través de ejemplos prácticos y análisis detallados, se busca no solo formalizar los conceptos matemáticos, sino también ilustrar su utilidad en problemas concretos.
 
@@ -432,7 +412,7 @@ El estudio de los ceros de $f(x) = x^2 - 2$ es equivalente al estudio de los pun
     \label{fig:mi_imagen_cobweb}
 \end{figure}
 
-Observamos que el diagrama no consigue acercarse a los puntos fijos de la función, la órbita muestra un comportamiento errático. Estudiaremos este tipo de comportamiento en la sección $3$.
+Observamos que el diagrama no consigue acercarse a los puntos fijos de la función, la órbita muestra un comportamiento errático. Estudiaremos este tipo de comportamiento en el Capítulo~\ref{chap:caos}.
 
 Notar que esto no es más que un caso particular del método de Euler tomando como ecuación diferencial 
 \[
@@ -822,15 +802,15 @@ Dada una función $f \in \mathcal{C}^3$ y un punto fijo $\hat{x} $ de $f$:
         \item[(b)] Si $f''(\hat{x}) < 0$, entonces $\hat{x}$ es asintóticamente estable por la derecha. 
         \item[(c)] Si $f''(\hat{x}) = 0$ pueden darse dos casos:
             \begin{itemize}
-                \item[(c.1)] $f'''(\hat{x}) > 0$, entonces $\hat{x}$ es asintóticamente estable
-                \item[(c.2)] $f'''(\hat{x}) < 0$, entonces $\hat{x}$ es inestable.
+                \item[(c.1)] $f'''(\hat{x}) > 0$, entonces $\hat{x}$ es inestable.
+                \item[(c.2)] $f'''(\hat{x}) < 0$, entonces $\hat{x}$ es asintóticamente estable.
             \end{itemize}
     \end{itemize}
 
-    \item[2.] Si $f'(\hat{x}) = -1$ y $3 f''(\hat{x})^2 - 2 f'''(\hat{x}) \neq 0$, entonces tenemos dos casos a considerar:
+    \item[2.] Si $f'(\hat{x}) = -1$ y $2 f'''(\hat{x}) + 3 f''(\hat{x})^2 \neq 0$, entonces tenemos dos casos a considerar:
     \begin{itemize}
-        \item[(a)] Si $f'''(\hat{x}) + \frac{3}{2} f''(\hat{x})^2  < 0$, entonces $\hat{x}$ es asintóticamente estable.
-        \item[(b)] Si $f'''(\hat{x})  + \frac{3}{2} f''(\hat{x})^2 > 0$, entonces $\hat{x}$ es inestable.
+        \item[(a)] Si $f'''(\hat{x}) + \frac{3}{2} f''(\hat{x})^2  > 0$, entonces $\hat{x}$ es asintóticamente estable.
+        \item[(b)] Si $f'''(\hat{x})  + \frac{3}{2} f''(\hat{x})^2 < 0$, entonces $\hat{x}$ es inestable.
     \end{itemize}
 \end{itemize}
 \end{teorema}
@@ -893,10 +873,10 @@ $$
 %
 Por último, $g'''(0)$ es de la forma:
 $$
-g'''(0) = -2 f'''(0) - 3 \left[ f''(0) \right]^2 =  \frac{f'''(x)}{f'(x)} - \frac{3}{2} \left[ \frac{f''(x)}{f'(x)} \right]^2.
+g'''(0) = -2 f'''(0) - 3 \left[ f''(0) \right]^2 = -2\left( f'''(0) + \frac{3}{2} \left[ f''(0) \right]^2 \right).
 $$
 %
-Entonces cuando $\frac{f'''(x)}{f'(x)} - \frac{3}{2} \left[ \frac{f''(x)}{f'(x)} \right]^2 > 0$ se trata del caso $1.b)$ y cuando $\frac{f'''(x)}{f'(x)} - \frac{3}{2} \left[ \frac{f''(x)}{f'(x)} \right]^2 < 0$ se trata del caso $1.c)$
+Como $g'(0)=1$ y $g''(0)=0$, podemos aplicar el caso $1.c)$ a $g$: cuando $f'''(0) + \frac{3}{2} f''(0)^2 > 0$ se tiene $g'''(0) < 0$, que es el caso $1.c.2)$, así que $0$ es asintóticamente estable; y cuando $f'''(0) + \frac{3}{2} f''(0)^2 < 0$ se tiene $g'''(0) > 0$, que es el caso $1.c.1)$, así que $0$ es inestable.
 \end{proof}
  
 
@@ -1047,7 +1027,7 @@ Signo: Veamos que ambos ceros tienen signos distintos, esto es equivalente a dec
 
 Como en un entorno de $\lambda$ $F(\lambda,x) -x$ se comporta como una función cuadrática con dos ceros, el discriminante debe de ser positivo, por tanto si $a(\lambda)$, $b(\lambda)$ y $c(\lambda)$ denotan los coeficientes asociados a la función cuadrática tenemos que $b(\lambda) = 0$ en un entorno de $\lambda = 0$ ya que $\frac{\partial (F(\lambda, x) - x)}{\partial x} = 0$ con $\lambda$ y $x$ pequeños. Por tanto el discriminante es de la forma $ - 4a(\lambda)c(\lambda) $, que es positivo pues la función tiene dos raíces, esto implica que $x^1_\lambda x^2_\lambda = \frac{c(\lambda)}{a(\lambda)} < 0$. Por tanto los ceros de $F(\lambda,x)-x$ tienen signo distinto para valores de $\lambda$ cercanos a $0$.
 
-Estabilidad: Como  para valores de $\lambda$ y $x$ pequeños $(F(\lambda,x) - x)''$ tiene el mismo signo que $(f(x)-x)''$ no cambia de signo en un entorno de $0$ si $f''(0) > 0$ entonces $(F(\lambda,x) - x)'' > 0$ y suponiendo que ambos ceros se encuentran dentro del entorno de $0$ podemos suponer que $F''(\lambda,x^1_\lambda) > 1$ y $F''(\lambda,x^2_\lambda) > 1$, es decir, ambos puntos son inestables, en cambio si $f''(0) < 0$ entonces $(F(\lambda,x) - x)'' < 0$ y por tanto $F''(\lambda,x^1_\lambda) < 1$ y $F''(\lambda,x^2_\lambda) < 1$, suponiendo que $F''(\lambda,x^1_\lambda) > -1$ y $F''(\lambda,x^2_\lambda) > -1$ concluimos que ambos puntos son estables.
+Estabilidad: Como  para valores de $\lambda$ y $x$ pequeños $(F(\lambda,x) - x)''$ tiene el mismo signo que $(f(x)-x)''$ no cambia de signo en un entorno de $0$ si $f''(0) > 0$ entonces $(F(\lambda,x) - x)'' > 0$ y suponiendo que ambos ceros se encuentran dentro del entorno de $0$ podemos suponer que $\partial_x F(\lambda,x^1_\lambda) > 1$ y $\partial_x F(\lambda,x^2_\lambda) > 1$, es decir, ambos puntos son inestables, en cambio si $f''(0) < 0$ entonces $(F(\lambda,x) - x)'' < 0$ y por tanto $\partial_x F(\lambda,x^1_\lambda) < 1$ y $\partial_x F(\lambda,x^2_\lambda) < 1$, suponiendo que $\partial_x F(\lambda,x^1_\lambda) > -1$ y $\partial_x F(\lambda,x^2_\lambda) > -1$ concluimos que ambos puntos son estables.
 
 Si $\alpha(\lambda) = 0$ entonces la parábola tiene un cero de multiplicidad $2$ y si el punto extremo es un mínimo positivo o un máximo negativo, es decir, $f''(0)\alpha(\lambda) > 0$ entonces la función no tiene ningún cero.
 \newline
@@ -1058,14 +1038,14 @@ A continuación mostramos la función $F(\lambda,x) - x$ en función del signo d
     \begin{subfigure}{0.45\textwidth}  % Ajusta el tamaño según sea necesario
         \centering
         \includegraphics[width=\textwidth]{fig47.png}  % Reemplaza con el nombre de tu imagen
-        \caption{Estudio de los ceros de $f$ cuando $f'''(0) > 0$ para distintos valores de $\alpha(\lambda)$}
+        \caption{Estudio de los ceros de $f$ cuando $f''(0) > 0$ para distintos valores de $\alpha(\lambda)$}
         \label{fig:mi_imagen_9_3}
     \end{subfigure}
     \hfill  % Espacio horizontal entre subfiguras
     \begin{subfigure}{0.45\textwidth}  % Ajusta el tamaño según sea necesario
         \centering
         \includegraphics[width=\textwidth]{fig48.png}  % Reemplaza con el nombre de tu imagen
-        \caption{Estudio de los ceros de $f$ cuando $f'''(0) < 0$ para distintos valores de $\alpha(\lambda)$}
+        \caption{Estudio de los ceros de $f$ cuando $f''(0) < 0$ para distintos valores de $\alpha(\lambda)$}
         \label{fig:mi_imagen_10_3}
     \end{subfigure}
     \caption{}
@@ -1078,7 +1058,7 @@ A continuación mostramos la función $F(\lambda,x) - x$ en función del signo d
 
 \begin{ejemplo}
 
-Consideremos la función cuadrática $f(x) = x + x^2$, como $f'(0) = 1> 0$ y $f \in \mathcal{C}^1$ existe un entorno de $0$ en el que la función tiene un sistema dinámico monótono, consideramos la función perturbada por un parámetro $\lambda$, $F(\lambda,x) = \lambda + x + x^2$ en este caso tenemos que $\alpha(\lambda) = \frac{\lambda}{2}$ y $f''(0) = 2$, en consecuencia si $\lambda < 0 $ $F$ tiene dos punto fijos, si $\lambda = 0$ $F$ tiene un puntos fijos y si $\lambda > 0$ $F$ no tiene ningún punto fijo.
+Consideremos la función cuadrática $f(x) = x + x^2$, como $f'(0) = 1> 0$ y $f \in \mathcal{C}^1$ existe un entorno de $0$ en el que la función tiene un sistema dinámico monótono, consideramos la función perturbada por un parámetro $\lambda$, $F(\lambda,x) = \lambda + x + x^2$ en este caso tenemos que $\alpha(\lambda) = \lambda$ y $f''(0) = 2$, en consecuencia si $\lambda < 0 $ $F$ tiene dos punto fijos, si $\lambda = 0$ $F$ tiene un puntos fijos y si $\lambda > 0$ $F$ no tiene ningún punto fijo.
     
 \end{ejemplo}
 
@@ -1517,7 +1497,7 @@ Esto demuestra que \( g \) también presenta sensibilidad a las condiciones inic
 
 \end{ejemplo}
 
-\section{Dinámica simbólica}
+\section{Dinámica simbólica}\label{sec:symbolic}
 
 Nos centramos ahora en una de las herramientas más útiles para analizar sistemas caóticos: la dinámica simbólica.
 
@@ -1633,7 +1613,7 @@ cualquier punto \(t=(t_{0}t_{1}t_{2}...) \in \Sigma\) basta tomar $t_p = (\overl
 \end{proof}
 
 
-\section{La ecuación logística}
+\section{La ecuación logística}\label{sec:logistic}
 
 La ecuación logística es una familia de funciones de la forma:
 $$
@@ -2066,11 +2046,177 @@ el sistema dinámico discreto asociado a la función $f_{\lambda}$ es caótico e
 Por lo tanto, la dinámica simbólica nos proporciona un modelo computable para la dinámica de $f_{\lambda}$ en el conjunto $\Lambda$, a pesar del hecho de que el sistema dinámico discreto asociado a la función $f_{\lambda}$ en $\Lambda$.
 
 
+\chapter{El Inicio del Periodo Tres en el Descenso del Gradiente}\label{chap:gd}
+
+En este capítulo aplicamos las herramientas de los capítulos anteriores a una aplicación unidimensional que surge del descenso del gradiente con un paso grande. Chen, Balasubramanian, Ghosal y Agrawalla~\cite{chen2024} mostraron que, para una familia de problemas de regresión cuadrática, la dinámica del entrenamiento se reduce a la iteración de una aplicación cúbica $f_a$, donde el parámetro $a$ es proporcional al tamaño del paso. Demostraron que existe un umbral $a_*$ a partir del cual la dinámica es caótica, y conjeturaron una caracterización de $a_*$ en términos del punto crítico de $f_a$.
+
+El resultado principal de este capítulo (Teorema~\ref{thm:main}) determina $a_*$, el parámetro en el que nace una órbita de periodo tres mediante una bifurcación silla-nodo de $f_a^3$: es un número algebraico explícito, la menor raíz en $[1,2]$ de un polinomio de grado $8$ con coeficientes enteros. Como consecuencia, la conjetura de~\cite{chen2024} es falsa. Para probarlo usamos la teoría de bifurcaciones del Capítulo~\ref{chap:bifurcaciones}, el teorema de Sharkovskii del Capítulo~\ref{chap:caos}, y el discriminante de un polinomio junto con el teorema de Sturm, calculados en aritmética entera exacta.
+
+\section{Del descenso del gradiente a una aplicación cúbica}
+
+El descenso del gradiente minimiza una función diferenciable $L:\mathbb{R}^d\to\mathbb{R}$ iterando
+\[
+w_{t+1} = w_t - \eta \nabla L(w_t),
+\]
+donde $\eta>0$ es el tamaño del paso. Cuando $\eta$ es pequeño, el descenso del gradiente se comporta como una discretización del flujo del gradiente $\dot w = -\nabla L(w)$ obtenida con el método de Euler (Capítulo~\ref{chap:dinamica_discreta}), y converge a un minimizador local. En aprendizaje automático, los tamaños de paso suelen ser grandes, y las iteraciones pueden oscilar, seguir órbitas periódicas o comportarse de forma errática. Estudiaremos la dinámica generada por estas aplicaciones.
+
+\subsection*{Nuestro problema modelo}
+
+Consideremos la función de pérdida de doble pozo
+\[
+L(x) = \tfrac14 (x^2-1)^2, \qquad x\in\mathbb{R},
+\]
+cuyos minimizadores son $x=\pm 1$. Como $L'(x) = x^3 - x$, el descenso del gradiente con tamaño de paso $\eta$ es la iteración de
+\[
+g_\eta(x) = x - \eta (x^3-x) = (1+\eta)\,x - \eta\, x^3 .
+\]
+El residuo de la iteración, escalado por el tamaño del paso, es
+\[
+z = \eta\,(x^2-1).
+\]
+Un cálculo directo muestra que si $x_{t+1} = g_\eta(x_t)$ entonces $z_{t+1} = f_\eta(z_t)$, donde
+\[
+f_a(z) = z\big((z+a)(z-2)+1\big) = z^3 + (a-2)z^2 + (1-2a)z .
+\]
+Donde $a = \eta$.
+En efecto, escribiendo $y = x^2$, tenemos $g_\eta(x)^2 = Q(y)$ con $Q(y) = y\,\big((1+\eta)-\eta y\big)^2$, y el cambio de variable afín $z = \eta(y-1)$ cumple $f_\eta\big(\eta(y-1)\big) = \eta\big(Q(y)-1\big)$.
+
+\subsection*{Propiedades básicas de $f_a$}
+
+A lo largo de este capítulo $1 < a \le 2$ y $J_a = [-a,2]$.
+
+\begin{itemize}
+    \item \emph{Puntos fijos.} $f_a(z) = z$ si y solo si $z\big((z+a)(z-2)\big) = 0$, así que los puntos fijos son $-a$, $0$ y $2$, que incluyen ambos extremos de $J_a$.
+    \item \emph{Derivada.} $f_a'(z) = 3z^2 + 2(a-2)z + 1-2a = (z-1)(3z+2a-1)$, así que los puntos críticos son $c_a = \frac{1-2a}{3}$ (un máximo local) y $1$ (un mínimo local), con $f_a(1) = -a$.
+    \item \emph{Multiplicadores de los puntos fijos.} $f_a'(0) = 1-2a$, $f_a'(2) = 5+2a$ y $f_a'(-a) = (a+1)^2$. Para $1<a\le 2$ los tres puntos fijos son hiperbólicos e inestables (Teorema~\ref{Teorema1.3.1}).
+    \item \emph{Invariancia.} $f_a(J_a)\subset J_a$, y las órbitas que empiezan fuera de $J_a$ divergen, así que $J_a$ contiene toda la dinámica acotada.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{fig_ch4_map.png}
+    \caption{Gráfica de $f_a$ en $J_a=[-a,2]$ para $a = 1.4504$. Los puntos marcan los puntos críticos $c_a=(1-2a)/3$ y $1$. Los tres puntos fijos están sobre la diagonal.}
+    \label{fig:ch4_map}
+\end{figure}
 
 
+\section{El periodo tres y el umbral $a_*$}
 
 
+\paragraph{Observación (caos de Li--Yorke).} Una aplicación $f:I\to I$ se llama \emph{caótica en el sentido de Li--Yorke} si (i) tiene puntos periódicos de todo periodo $k\in\mathbb{N}$, y (ii) existe un conjunto no numerable de puntos cuyas órbitas se acercan arbitrariamente entre sí y se separan de nuevo infinitas veces. Por el teorema de Sharkovskii (Sección~\ref{sec:logistic}), la condición (i) se cumple si y solo si $f$ tiene un punto de periodo $3$, ya que $3$ es el primer número en el orden de Sharkovskii. Li y Yorke probaron que un punto de periodo $3$ implica también la condición (ii). Por tanto
+\[
+f_a \text{ es caótica en el sentido de Li--Yorke} \iff f_a \text{ tiene un punto de periodo mínimo } 3 \text{ en } J_a .
+\]
+A partir de ahora solo trabajamos con órbitas de periodo tres.
 
+\begin{definicion}
+El \emph{umbral de caos} es
+\[
+a_* = \inf\{\,a\in(1,2) : f_b \text{ tiene un punto de periodo mínimo } 3 \text{ en } J_b \text{ para todo } b\in[a,2]\,\}.
+\]
+\end{definicion}
+
+Chen et al.\ probaron que $a_*\in(1,2)$. A continuación formularon la siguiente conjetura.
+
+\begin{conjetura}
+$a_*$ es el menor $a\in(1,2)$ tal que el punto crítico $c_a = \frac{1-2a}{3}$ es un punto periódico de periodo $3$. Denotamos este número por $a_c$.
+\end{conjetura}
+
+La conjetura surge de la idea de que, al aumentar $a$, la gráfica de $f_a^3$ desciende hacia la diagonal, y se espera que el primer contacto ocurra en el mínimo local procedente del punto crítico $c_a$, lo que haría que $c_a$ fuese $3$-periódico. Sin embargo, en ese mínimo la pendiente de $f_a^3$ es $0$, mientras que la diagonal tiene pendiente $1$. El primer contacto es por tanto una tangencia con $(f_a^3)'=1$, algo a la derecha del mínimo (Figura~\ref{fig:ch4_tangency}). Se trata de una bifurcación silla-nodo de $f_a^3$ (Capítulo~\ref{chap:bifurcaciones}). Lo mismo ocurre en la ecuación logística, donde el periodo tres aparece en $\lambda=1+\sqrt8\approx3.8284$ pero el punto crítico pasa a ser $3$-periódico solo en $\lambda\approx3.8319$. El siguiente teorema muestra que también sucede así para $f_a$.
+
+\section{Resolución de la conjetura}
+
+Los puntos fijos $-a$, $0$, $2$ son raíces de $f_a^3(z) - z$, así que
+\[
+f_a^3(z) - z = z(z+a)(z-2)\,P(z,a),
+\]
+donde $P$ es un polinomio con coeficientes enteros, de grado $24$ en $z$ con coeficiente principal $1$, y de grado $8$ en $a$. Sea $N(a)$ el número de puntos de periodo mínimo $3$ de $f_a$ en $J_a$, y sea
+\[
+D(a) = \operatorname{disc}_z P(\cdot,a)
+\]
+el discriminante de $P$ respecto de $z$. Es un polinomio en $a$ con coeficientes enteros, y $D(a)=0$ exactamente cuando $P(\cdot,a)$ tiene una raíz múltiple.
+
+\begin{lema}[Lema de conteo]\label{lem:count}
+Sea $[\alpha,\beta]\subset[1,2]$ un intervalo con $D(a)\ne0$ para todo $a\in[\alpha,\beta]$. Entonces $N$ es constante en $[\alpha,\beta]$.
+\end{lema}
+
+\begin{proof}
+\emph{Paso 1: los ceros de $P(\cdot, a)$ en $J_a$ son exactamente los puntos de periodo mínimo $3$.} Un cero de $f_a^3(z) - z$ que no es un punto fijo tiene periodo mínimo $3$. Recíprocamente, si un punto fijo $p$ fuese un cero de $P$, sería un cero doble de $f^3_a(z)-z$, de modo que $(f_a^3)'(p) = f_a'(p)^3 = 1$, es decir, $f_a'(p) = 1$. Esto es imposible porque $f'_a(0) = 1-2a$, $f'_a(2) = 5+2a$ y $f'_a(-a) = (a+1)^2$ son todos distintos de $1$ para $a\ge1$. En particular $P(-a,a)\ne0$ y $P(2,a)\ne0$. Como $D(a)\neq 0$, todos los ceros de $P(\cdot,a)$ son simples.
+
+\emph{Paso 2: $N$ es localmente constante.} Fijemos $a_0\in[\alpha,\beta]$ y sean $z_1,\dots,z_N$ los ceros de $P(\cdot,a_0)$ en $J_{a_0}$; son simples y están en el intervalo abierto $(-a_0,2)$. Las raíces de un polinomio mónico dependen continuamente de sus coeficientes. Por tanto, para $a$ próximo a $a_0$, cada disco pequeño alrededor de $z_j$ en el plano complejo contiene exactamente una raíz de $P(\cdot,a)$. Esa raíz es real, porque las raíces no reales vienen en pares conjugados y el disco es simétrico respecto del eje real. Todas las demás raíces de $P(\cdot,a)$ permanecen cerca de las otras raíces de $P(\cdot,a_0)$, que son no reales, o reales y fuera de $[-a_0,2]$. Como $P(-a_0,a_0)\neq 0$ y $P(2,a_0)\ne 0$, ninguna raíz cruza los extremos móviles de $J_a$ para $a$ próximo a $a_0$. Por tanto $N(a) = N(a_0)$ para $a$ próximo a $a_0$. Una función localmente constante en un intervalo es constante.
+\end{proof}
+
+\begin{teorema}\label{thm:main}
+Sea
+\[
+Q(a) = 4a^8 + 48a^7 + 189a^6 + 144a^5 - 828a^4 - 2052a^3 - 972a^2 + 2700a + 4644,
+\]
+y sea $a_{sn}$ su menor raíz en $[1,2]$. Entonces $a_{sn}\in[\,1.450440964487875,\ 1.450440964487876\,]$ y
+\begin{enumerate}
+    \item para $1\le a<a_{sn}$, $f_a$ no tiene ningún punto de periodo mínimo $3$ en $J_a$;
+    \item para $a_{sn}\le a\le 2$, $f_a$ tiene un punto de periodo mínimo $3$ en $J_a$;
+    \item en $a = a_{sn}$ la gráfica de $f_a^3$ es tangente a la diagonal: $f_a$ tiene una órbita de periodo tres con $(f_a^3)'=1$, aproximadamente $\{-1.2861680,\ -0.5918579,\ 0.7252185\}$.
+\end{enumerate}
+En consecuencia, $a_* = a_{sn}$.
+\end{teorema}
+
+Es decir, $a_{sn}$ es exactamente el parámetro de la bifurcación silla-nodo que crea la primera órbita de periodo tres, y a partir de ahí el periodo tres nunca desaparece (Figura~\ref{fig:ch4_tangency}).
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{fig_ch4_tangency.png}
+    \caption{Gráfica de $f_a^3$ cerca de $z=-1.29$. Para $a<a_{sn}$ queda por encima de la diagonal; en $a = a_{sn}$ es tangente a ella; para $a>a_{sn}$ la corta dos veces, creando dos órbitas de periodo tres (una bifurcación silla-nodo de $f_a^3$).}
+    \label{fig:ch4_tangency}
+\end{figure}
+
+\begin{proof}[Demostración del Teorema~\ref{thm:main}]
+Todos los cálculos siguientes se hacen con un sistema de álgebra computacional en aritmética exacta de enteros y racionales, por lo que no interviene ningún redondeo. El discriminante $D$ tiene grado $64$ y se factoriza sobre $\mathbb{Z}$ como
+\[
+D(a) = 2^{24}\, R_1(a)^2R_2(a)^2R_3(a)^2R_4(a)^2\; Q_1(a)^3\, Q(a)^3 ,
+\]
+donde
+\[
+R_1 = a^2+a+1,\quad R_2 = a^2+3a+3,\quad R_3 = 4a^2-6a+3,\quad R_4 = 4a^2+22a+31
+\]
+tienen discriminante negativo y por tanto no tienen raíces reales, $Q$ es el polinomio del enunciado y
+\[
+Q_1(a) = 4a^8 + 16a^7 - 35a^6 - 116a^5 + 112a^4 + 196a^3 + 220a^2 - 1100a + 892 .
+\]
+El exponente $3$ refleja que los tres puntos de una órbita de periodo tres se convierten en raíces dobles a la vez. Recordemos el teorema de Sturm. Para un polinomio $p$, sean $p_0=p$, $p_1=p'$, y definamos $p_{k+1}$ como menos el resto de la división de $p_{k-1}$ entre $p_k$, es decir,
+\[
+p_{k-1} = q_k\,p_k - p_{k+1}, \qquad \deg p_{k+1} < \deg p_k ,
+\]
+para cierto polinomio $q_k$, hasta que el resto sea cero. Sea $V(x)$ el número de cambios de signo en la sucesión $p_0(x),p_1(x),\dots$; entonces el número de raíces reales distintas de $p$ en $(\alpha,\beta]$ es $V(\alpha)-V(\beta)$. El teorema de Sturm muestra que $D$ tiene exactamente cuatro raíces en $[1,2]$,
+\[
+a_{sn}=r_1 < r_2 < r_3 < r_4, \qquad r_1\approx1.45044,\quad r_2\approx 1.69964,\quad r_3\approx 1.92487,\quad r_4\approx 1.98177,
+\]
+donde $r_1,r_4$ son raíces de $Q$ y $r_2,r_3$ son raíces de $Q_1$. Bisecando $[1,2]$ y contando raíces con el teorema de Sturm se aísla $r_1$ en $[1,1.5]$; bisectando repetidamente, quedándonos con la mitad donde $Q$ cambia de signo (Bolzano), se obtiene $r_1\in[1.450440964487875,\ 1.450440964487876]$ tras unos $50$ pasos. Las otras tres raíces se localizan de la misma manera, $r_2\approx 1.69964$, $r_3\approx 1.92487$, $r_4\approx 1.98177$.
+
+Por el Lema~\ref{lem:count}, $N$ es constante en cada uno de los intervalos $[1,r_1)$, $(r_1,r_2)$, $(r_2,r_3)$, $(r_3,r_4)$, $(r_4,2]$, así que basta calcularlo en un punto de cada intervalo. Tomamos un valor racional $a_0$ por intervalo, y contamos con el teorema de Sturm las raíces del polinomio $z\mapsto P(z,a_0)$ en $[-a_0,2]$, lo que da
+\[
+N = 0,\quad 6,\quad 12,\quad 18,\quad 24
+\]
+En los propios parámetros $r_j$ el Lema~\ref{lem:count} no se aplica, pero los puntos de periodo tres no pueden desaparecer cuando $a\to r_j$ por la derecha, convergen a puntos que siguen siendo raíces de $P$. Tomemos $a_n = r_j + 1/n$ y $z_n\in J_{a_n}$ con $P(z_n,a_n)=0$. Los $z_n$ están en $[-2,2]$, así que una subsucesión converge a algún $z^*\in J_{r_j}$, y por continuidad $P(z^*,r_j)=0$. Por el Paso 1 del Lema~\ref{lem:count}, $z^*$ tiene periodo mínimo $3$, así que $N(r_j)>0$. Esto prueba la parte 2.
+
+Para la parte 3, sea $z_0\in J_{a_{sn}}$ un punto de periodo tres obtenido como arriba como límite por la derecha. No puede ser una raíz simple de $P(\cdot,a_{sn})$, ya que las raíces simples persisten ante pequeños cambios del parámetro, así que también existiría para $a$ ligeramente menor que $a_{sn}$, donde $N=0$. Por tanto $z_0$ es una raíz doble, $P(z_0,a_{sn}) = \partial_z P(z_0,a_{sn}) = 0$, y derivando $f_a^3(z)-z = z(z+a)(z-2)P(z,a)$ se obtiene $f_{a_{sn}}^3(z_0)=z_0$ y $(f_{a_{sn}}^3)'(z_0)=1$; en conclusión, la gráfica de $f_{a_{sn}}^3$ es tangente a la diagonal en $z_0$.
+
+Finalmente, por las partes 1 y 2, $f_b$ tiene un punto de periodo $3$ para todo $b\in[a_{sn},2]$, lo que da $a_*\le a_{sn}$; y para todo $a<a_{sn}$ el intervalo $[a,2]$ contiene un parámetro sin periodo tres, lo que da $a_*\ge a_{sn}$.
+\end{proof}
+
+\subsection*{La conjetura es falsa}
+
+\begin{corolario}\label{cor:conj}
+La conjetura de~\cite{chen2024} es falsa. El parámetro $a_c$ cumple $a_c\in(1.45315,\ 1.45316]$, y por tanto
+\[
+a_* = a_{sn} < 1.4505 < 1.45315 < a_c .
+\]
+Para todo $a\in(a_*,a_c)$, $f_a$ tiene órbitas de periodo tres (y por tanto órbitas de todos los periodos) aunque el punto crítico no es periódico de periodo $3$.
+\end{corolario}
+
+\begin{proof}
+El punto crítico $c_a=\frac{1-2a}{3}$ cumple $f_a^3(c_a)=c_a$ exactamente cuando $a$ es una raíz de $G(a) = f_a^3(c_a) - c_a$. Como $c_a$ es un polinomio de grado $1$ en $a$ y $f_a(z)$ es un polinomio en $z$ y $a$, $G$ es un polinomio en $a$ de grado $27$ con coeficientes racionales. Evaluando en aritmética racional exacta, $G(1.45315)>0$ y $G(1.45316)<0$, así que por el teorema de Bolzano $G$ tiene una raíz en $(1.45315,\ 1.45316)$. Veamos ahora que no hay ninguna raíz anterior, usando el teorema de Sturm. En aritmética exacta obtenemos $V(1)=V(1.45315)=9$ y $V(1.45316)=8$, así que $G$ no tiene raíces en $(1,\ 1.45315]$ y tiene exactamente una en $(1.45315,\ 1.45316]$, y además $G(1)\neq0$. Por último, una raíz de $G$ significa que $c_a$ tiene periodo $1$ o $3$, y como $c_a\notin\{-a,0,2\}$ para $a\in[1,2]$ el punto crítico nunca es un punto fijo, así que tiene periodo mínimo $3$. Por tanto $a_c\in(1.45315,\ 1.45316]$.
+\end{proof}
 
 \begin{thebibliography}{99}
     \bibitem{ref1} Morris W. Hirsch, Stephen Smale, Robert L. Devaney, {\em Differential Equations, Dynamical Systems, and an Introduction to Chaos}, Elsevier, 2003.
@@ -2078,6 +2224,9 @@ Por lo tanto, la dinámica simbólica nos proporciona un modelo computable para 
     \bibitem{ref3} Erwin Kreyszig, {\em Introductory Functional Analysis with Applications,} John Wiley and Sons, 1978
     \bibitem{ref4} Han Peters, RTNS24 conference, 2024
     \bibitem{ref5} David Kincaid, Ward Cheney,{\em Numerical Analisys, Mathematics of Numerical Computing}, American Mathematical Society, 1990
+    \bibitem{chen2024} Xuxing Chen, Krishna Balasubramanian, Promit Ghosal, Bhavya Kumar Agrawalla, {\em From Stability to Chaos: Analyzing Gradient Descent Dynamics in Quadratic Regression}, Transactions on Machine Learning Research, 2024.
+    \bibitem{liyorke} Tien-Yien Li, James A. Yorke, {\em Period Three Implies Chaos}, The American Mathematical Monthly 82 (10), 985--992, 1975.
+    \bibitem{pomeau} Yves Pomeau, Paul Manneville, {\em Intermittent Transition to Turbulence in Dissipative Dynamical Systems}, Communications in Mathematical Physics 74, 189--197, 1980.
 \end{thebibliography}
 
 \end{document}
